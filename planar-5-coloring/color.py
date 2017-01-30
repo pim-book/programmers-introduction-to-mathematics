@@ -2,7 +2,15 @@ import igraph
 from itertools import combinations
 
 
-def makemergeionMap(G, w1, w2):
+'''
+  Make a list to denote the merging of two vertices the list "maps" the indices
+of vertices in the unmerged graph to the indices of the vertices in the merged
+graph.  For example, merging vertices 2 and 4 might consist of the list
+[1,2,0,3,0,4,5] or [0,1,2,3,2,4,5], i.e. index i of the list is the "old index"
+and the value is the new index, but it doesn't matter which new indices you
+choose, just which vertices are mapped to the same index.
+'''
+def makeMergeMap(G, w1, w2):
    n = len(G.vs)
    noOffset = list(range(w2.index))
    offsetPart = [w1.index] + [w2.index + j for j in range(n - w2.index - 1)]
@@ -10,9 +18,11 @@ def makemergeionMap(G, w1, w2):
    return noOffset + offsetPart
 
 
+# merge two vertices by constructing a merge map for igraph's
+# contract_vertices function
 def mergeTwo(G, w1, w2):
-   mergeionMap = makemergeionMap(G, w1, w2)
-   G.merge_vertices(mergeionMap, combine_attrs=(lambda x: x))
+   mergeMap = makeMergeMap(G, w1, w2)
+   G.contract_vertices(mergeMap, combine_attrs=(lambda x: x))
 
 
 def findTwoNonadjacent(G, nodes):
@@ -58,7 +68,7 @@ def planarFiveColor(G):
    coloredGPrime = planarFiveColor(GPrime)
 
    for w in coloredGPrime.vs:
-      # subset selection handles the mergeed w1, w2
+      # subset selection handles the merged w1, w2
       G.vs[w['oldIndex']]['color'] = w['color']
 
    neighborColors = set(w['color'] for w in v.neighbors())

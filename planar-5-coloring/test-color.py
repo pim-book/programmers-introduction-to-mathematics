@@ -31,12 +31,12 @@ def testHasDegree4Node():
 
    test(True, properlyColored(G))
 
-def testContractionMap():
+def testMergeMap():
    G = igraph.Graph.Full(n=6)
    w1 = G.vs[1]
    w2 = G.vs[3]
 
-   actual = makeContractionMap(G, w1, w2)
+   actual = makeMergeMap(G, w1, w2)
    test([0,1,2,1,3,4], actual)
 
 def testAllDegree5():
