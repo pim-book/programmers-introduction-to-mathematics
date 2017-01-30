@@ -59,6 +59,7 @@ class Polynomial(object):
    def __call__(self, *args): return self.evaluateAt(args[0])
 
 
-f = Polynomial([1,2,3])
-g = Polynomial([4,5,6])
+if __name__ == "__main__":
+   f = Polynomial([1,2,3])
+   g = Polynomial([4,5,6])
 

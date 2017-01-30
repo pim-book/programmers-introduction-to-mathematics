@@ -33,9 +33,10 @@ def interpolate(pts):
    return sum(terms, Polynomial([]))
 
 
-pts1 = [(1,1)]
-pts2 = [(1,1), (2,0)]
-pts3 = [(1,1), (2,4), (7,9)]
+if __name__ == "__main__":
+   pts1 = [(1,1)]
+   pts2 = [(1,1), (2,0)]
+   pts3 = [(1,1), (2,4), (7,9)]
 
-f = interpolate(pts3)
-print([f(xi) for xi,yi in pts3]) # rounding error, but good enough
+   f = interpolate(pts3)
+   print([f(xi) for xi,yi in pts3]) # rounding error, but good enough
