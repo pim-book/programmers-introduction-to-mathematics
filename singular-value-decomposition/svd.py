@@ -15,7 +15,7 @@ def svd_1d(A, epsilon=1e-10):
     ''' The one-dimensional SVD '''
 
     n, m = A.shape
-    x = randomUnitVector(m)
+    x = randomUnitVector(min(n,m))
     lastV = None
     currentV = x
 
@@ -43,6 +43,7 @@ def svd(A, k=None, epsilon=1e-10):
         is the number of singular values you wish to compute.
         If k is None, this computes the full-rank decomposition.
     '''
+    A = np.array(A, dtype=float)
     n, m = A.shape
     svdSoFar = []
     if k is None:
@@ -54,10 +55,16 @@ def svd(A, k=None, epsilon=1e-10):
         for singularValue, u, v in svdSoFar[:i]:
             matrixFor1D -= singularValue * np.outer(u, v)
 
-        v = svd_1d(matrixFor1D, epsilon=epsilon)  # next singular vector
-        u_unnormalized = np.dot(A, v)
-        sigma = norm(u_unnormalized)  # next singular value
-        u = u_unnormalized / sigma
+        if n > m:
+            v = svd_1d(matrixFor1D, epsilon=epsilon)  # next singular vector
+            u_unnormalized = np.dot(A, v)
+            sigma = norm(u_unnormalized)  # next singular value
+            u = u_unnormalized / sigma
+        else:
+            u = svd_1d(matrixFor1D, epsilon=epsilon)  # next singular vector
+            v_unnormalized = np.dot(A.T, u)
+            sigma = norm(v_unnormalized)  # next singular value
+            v = v_unnormalized / sigma
 
         svdSoFar.append((sigma, u, v))
 
