@@ -2,7 +2,6 @@ from assertpy import assert_that
 
 from polynomial import strip
 from polynomial import Polynomial
-from polynomial import ZERO
 
 
 def test_strip_empty():
