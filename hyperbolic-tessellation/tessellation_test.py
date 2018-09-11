@@ -3,6 +3,7 @@ from geometry import Point
 from geometry import rotate_around_origin
 import itertools
 import math
+import pytest
 
 from tessellation import *
 from testing import *
@@ -16,11 +17,8 @@ def test_valid_configuration():
 
 
 def test_invalid_configuration():
-    try:
+    with pytest.raises(ValueError):
         TessellationConfiguration(4, 4)
-        assert False
-    except Exception:
-        pass
 
 
 def test_center_polygon():

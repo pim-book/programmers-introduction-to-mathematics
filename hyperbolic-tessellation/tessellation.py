@@ -18,8 +18,8 @@ class TessellationConfiguration(
                    ['numPolygonSides', 'numPolygonsPerVertex'])):
     def __init__(self, numPolygonSides, numPolygonsPerVertex):
         if not self.is_hyperbolic():
-            raise Exception("Configuration {%s, %s} is not hyperbolic." %
-                            (self.numPolygonSides, self.numPolygonsPerVertex))
+            raise ValueError("Configuration {%s, %s} is not hyperbolic." %
+                             (self.numPolygonSides, self.numPolygonsPerVertex))
 
     def is_hyperbolic(self):
         return (self.numPolygonSides - 2) * (self.numPolygonsPerVertex - 2) > 4
