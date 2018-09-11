@@ -1,14 +1,17 @@
 from polynomial import Polynomial
 
 
-# pts is a list of (float, float)
-# i is an integer idex of pts.
-# Return one term from the sum in the construction of Theorem 1 (Chapter 2)
-def singleTerm(pts, i):
-    theTerm = Polynomial([1.])
-    xi, yi = pts[i]
+def singleTerm(points, i):
+    """ Return one term of an interpolated polynomial.
 
-    for j, p in enumerate(pts):
+    Arguments:
+      - points: a list of (float, float)
+      - i: an integer index of points
+    """
+    theTerm = Polynomial([1.])
+    xi, yi = points[i]
+
+    for j, p in enumerate(points):
         if j == i:
             continue
 
@@ -18,22 +21,21 @@ def singleTerm(pts, i):
     return theTerm * Polynomial([yi])
 
 
-# pts is a list of (float, float)
-# Return the unique degree n polynomial that passes through the given n+1
-# points.
-def interpolate(pts):
-    if len(pts) == 0:
-        raise Exception('Must provide at least one point.')
+def interpolate(points):
+    """ Return the unique degree n polynomial passing through the given n+1 points.
+    """
+    if len(points) == 0:
+        raise ValueError('Must provide at least one point.')
 
-    xValues = [p[0] for p in pts]
+    xValues = [p[0] for p in points]
     if len(set(xValues)) < len(xValues):
-        raise Exception('Not all x values are distinct.')
+        raise ValueError('Not all x values are distinct.')
 
-    terms = [singleTerm(pts, i) for i in range(0, len(pts))]
+    terms = [singleTerm(points, i) for i in range(0, len(points))]
     return sum(terms, Polynomial([]))
 
 
 if __name__ == "__main__":
-    pts3 = [(1, 1), (2, 4), (7, 9)]
-    f = interpolate(pts3)
-    print([f(xi) for xi, yi in pts3])  # rounding error, but good enough
+    points = [(1, 1), (2, 4), (7, 9)]
+    f = interpolate(points)
+    print([f(xi) for xi, yi in points])  # rounding error, but good enough
