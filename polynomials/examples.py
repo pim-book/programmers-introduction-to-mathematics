@@ -2,8 +2,8 @@ from polynomial import *
 from interpolate import *
 
 f = Polynomial([109, -55, 271])
-for i in range(1,6):
-   print((i, f(i)))
+for i in range(1, 6):
+    print((i, f(i)))
 
 pts = [(1, 325), (3, 2383), (5, 6609)]
 f = interpolate(pts)
