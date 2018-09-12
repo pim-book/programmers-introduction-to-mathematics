@@ -1,2 +1,2 @@
 [run]
-omit = venv
+omit = venv/*,__pycache__/*
