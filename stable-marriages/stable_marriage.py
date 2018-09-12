@@ -11,15 +11,13 @@ class Suitor:
         return self.preference_list[self.rejections]
 
     def __eq__(self, other):
-        if not isinstance(other, Suitor):
-            return False
-        return self.id == other.id
+        return isinstance(other, Suitor) and self.id == other.id
 
     def __hash__(self):
         return hash(self.id)
 
     def __repr__(self):
-        return "Suited({})".format(self.id)
+        return "Suitor({})".format(self.id)
 
 
 class Suited:
@@ -44,15 +42,13 @@ class Suited:
         return rejected
 
     def __eq__(self, other):
-        if not isinstance(other, Suited):
-            return False
-        return self.id == other.id
+        return isinstance(other, Suited) and self.id == other.id
 
     def __hash__(self):
         return hash(self.id)
 
     def __repr__(self):
-        return "Suitor({})".format(self.id)
+        return "Suited({})".format(self.id)
 
 
 def stable_marriage(suitors, suiteds):
