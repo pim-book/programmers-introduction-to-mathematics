@@ -208,6 +208,8 @@ def test_learn_xor_sigmoid():
     for (example, label) in dataset:
         assert abs(network.evaluate(example) - label) < 0.1
 
+    assert network.error_on_dataset(dataset) == 0.0
+
 
 def test_learn_xor_relu():
     random.seed(1)
@@ -232,3 +234,5 @@ def test_learn_xor_relu():
     network.train(dataset, max_steps=1000)
     for (example, label) in dataset:
         assert abs(network.evaluate(example) - label) < 0.1
+
+    assert network.error_on_dataset(dataset) == 0.0
