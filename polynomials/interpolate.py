@@ -33,9 +33,3 @@ def interpolate(points):
 
     terms = [singleTerm(points, i) for i in range(0, len(points))]
     return sum(terms, Polynomial([]))
-
-
-if __name__ == "__main__":
-    points = [(1, 1), (2, 4), (7, 9)]
-    f = interpolate(points)
-    print([f(xi) for xi, yi in points])  # rounding error, but good enough
