@@ -1,100 +1,114 @@
-
-class Suitor(object):
-   def __init__(self, id, prefList):
-      self.prefList = prefList
-      self.rejections = 0 # num rejections is also the index of the next option
-      self.id = id
-
-   def preference(self):
-      return self.prefList[self.rejections]
-
-   def __repr__(self):
-      return repr(self.id)
+import itertools
 
 
-class Suited(object):
-   def __init__(self, id, prefList):
-      self.prefList = prefList
-      self.held = None
-      self.currentSuitors = set()
-      self.id = id
+class Suitor:
+    def __init__(self, id, preference_list):
+        self.preference_list = preference_list
+        self.rejections = 0  # num rejections is also the index of the next option
+        self.id = id
 
-   def reject(self):
-      if len(self.currentSuitors) == 0:
-         return set()
+    def preference(self):
+        return self.preference_list[self.rejections]
 
-      if self.held is not None:
-         self.currentSuitors.add(self.held)
+    def __eq__(self, other):
+        if not isinstance(other, Suitor):
+            return False
+        return self.id == other.id
 
-      self.held = min(self.currentSuitors, key=lambda suitor: self.prefList.index(suitor.id))
-      rejected = self.currentSuitors - set([self.held])
-      self.currentSuitors = set()
+    def __hash__(self):
+        return hash(self.id)
 
-      return rejected
-
-   def __repr__(self):
-      return repr(self.id)
+    def __repr__(self):
+        return "Suited({})".format(self.id)
 
 
-# stableMarriage: [Suitor], [Suited] -> {Suitor: Suited}
-# construct a stable marriage between suitors and suiteds
-def stableMarriage(suitors, suiteds):
-   unassigned = set(suitors)
+class Suited:
+    def __init__(self, id, preference_list):
+        self.preference_list = preference_list
+        self.held = None
+        self.current_suitors = set()
+        self.id = id
 
-   while len(unassigned) > 0:
-      for suitor in unassigned:
-         suiteds[suitor.preference()].currentSuitors.add(suitor)
-      unassigned = set()
+    def reject(self):
+        if len(self.current_suitors) == 0:
+            return set()
 
-      for suited in suiteds:
-         unassigned |= suited.reject()
+        if self.held is not None:
+            self.current_suitors.add(self.held)
 
-      for suitor in unassigned:
-         suitor.rejections += 1
+        self.held = min(self.current_suitors,
+                        key=lambda suitor: self.preference_list.index(suitor.id))
+        rejected = self.current_suitors - set([self.held])
+        self.current_suitors = set()
 
-   return dict([(suited.held, suited) for suited in suiteds])
+        return rejected
 
+    def __eq__(self, other):
+        if not isinstance(other, Suited):
+            return False
+        return self.id == other.id
 
-# verifyStable: [Suitor], [Suited], {Suitor: Suited} -> bool
-# check that the assignment of suitors to suited is a stable marriage
-def verifyStable(suitors, suiteds, marriage):
-   import itertools
-   suitedToSuitor = dict((v,k) for (k,v) in marriage.items())
+    def __hash__(self):
+        return hash(self.id)
 
-   precedes = lambda L, item1, item2: L.index(item1) < L.index(item2)
-
-   def suitorPrefers(suitor, suited):
-      return precedes(suitor.prefList, suited.id, marriage[suitor].id)
-
-   def suitedPrefers(suited, suitor):
-      return precedes(suited.prefList, suitor.id, suitedToSuitor[suited].id)
-
-   for (suitor, suited) in itertools.product(suitors, suiteds):
-      if suited != marriage[suitor] and suitorPrefers(suitor, suited) and suitedPrefers(suited, suitor):
-         return False, (suitor.id, suited.id)
-
-   return True
+    def __repr__(self):
+        return "Suitor({})".format(self.id)
 
 
-if __name__ == "__main__":
-   from test import test
+def stable_marriage(suitors, suiteds):
+    """ Construct a stable marriage between Suitors and Suiteds.
 
-   suitors = [Suitor(0, [0,1]), Suitor(1, [1,0])]
-   suiteds = [Suited(0, [0,1]), Suited(1, [1,0])]
-   marriage = stableMarriage(suitors, suiteds)
-   test({suitors[0]:suiteds[0], suitors[1]:suiteds[1]}, marriage)
-   test(True, verifyStable(suitors, suiteds, marriage))
+    Arguments:
+        suitors: a list of Suitor
+        suiteds: a list of Suited, which deferred acceptance of Suitors.
+
+    Returns:
+        A dict {Suitor: Suited} matching Suitors to Suiteds.
+    """
+    unassigned = set(suitors)
+
+    while len(unassigned) > 0:
+        for suitor in unassigned:
+            suiteds[suitor.preference()].current_suitors.add(suitor)
+        unassigned = set()
+
+        for suited in suiteds:
+            unassigned |= suited.reject()
+
+        for suitor in unassigned:
+            suitor.rejections += 1
+
+    return dict([(suited.held, suited) for suited in suiteds])
 
 
-   suitors = [Suitor(0, [3,5,4,2,1,0]), Suitor(1, [2,3,1,0,4,5]),
-               Suitor(2, [5,2,1,0,3,4]), Suitor(3, [0,1,2,3,4,5]),
-               Suitor(4, [4,5,1,2,0,3]), Suitor(5, [0,1,2,3,4,5])]
+def verify_stable(suitors, suiteds, marriage):
+    """ Check that the assignment of suitors to suited is a stable marriage.
 
-   suiteds = [Suited(0, [3,5,4,2,1,0]), Suited(1, [2,3,1,0,4,5]),
-               Suited(2, [5,2,1,0,3,4]), Suited(3, [0,1,2,3,4,5]),
-               Suited(4, [4,5,1,2,0,3]), Suited(5, [0,1,2,3,4,5])]
+    Arguments:
+        suitors: a list of Suitors
+        suiteds: a list of Suiteds
+        marriage: a matching {Suitor: Suited}
 
-   marriage = stableMarriage(suitors, suiteds)
-   test({suitors[0]:suiteds[3], suitors[1]:suiteds[2], suitors[2]:suiteds[5],
-         suitors[3]:suiteds[0], suitors[4]:suiteds[4], suitors[5]:suiteds[1]}, marriage)
-   test(True, verifyStable(suitors, suiteds, marriage))
+    Returns:
+        True if the marriage is stable, otherwise a tuple (False, (x, y))
+        where x is a Suitor, y is a Suited, and (x, y) are a counterexample
+        to the claim that the marriage is stable.
+    """
+
+    suited_to_suitor = dict((v, k) for (k, v) in marriage.items())
+
+    def precedes(L, item1, item2): return L.index(item1) < L.index(item2)
+
+    def suitor_prefers(suitor, suited):
+        return precedes(suitor.preference_list, suited.id, marriage[suitor].id)
+
+    def suited_prefers(suited, suitor):
+        return precedes(suited.preference_list, suitor.id, suited_to_suitor[suited].id)
+
+    for (suitor, suited) in itertools.product(suitors, suiteds):
+        if (suited != marriage[suitor]
+                and suitor_prefers(suitor, suited)
+                and suited_prefers(suited, suitor)):
+            return False, (suitor, suited)
+
+    return True
