@@ -1,3 +1,5 @@
+import random
+
 from neural_network import InputNode
 from neural_network import L2ErrorNode
 from neural_network import LinearNode
@@ -177,12 +179,13 @@ def test_neural_network_backpropagation_step():
 
 '''
 The remaining tests have some chance of failing due to the randomness in
-their initialization. I have not fixed the seed in order to demonstrate
-that the learning is heavily dependent on a lucky initial point.
+their initialization. Remove the fixing of the random seed to observe
+that they sometimes fail.
 '''
 
 
 def test_learn_xor_sigmoid():
+    random.seed(1)
     input_nodes = InputNode.make_input_nodes(2)
     linear_node_1 = LinearNode(input_nodes)
     linear_node_2 = LinearNode(input_nodes)
@@ -207,6 +210,7 @@ def test_learn_xor_sigmoid():
 
 
 def test_learn_xor_relu():
+    random.seed(1)
     input_nodes = InputNode.make_input_nodes(2)
 
     first_layer = [LinearNode(input_nodes) for i in range(10)]
