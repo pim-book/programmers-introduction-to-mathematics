@@ -34,6 +34,7 @@ class CachedNodeData(object):
     - local_parameter_gradient: [∂f/∂w_1, ∂f/∂w_2, ..., ∂f/∂w_k]
     - global_parameter_gradient: [∂E/∂w_1, ∂E/∂w_2, ..., ∂E/∂w_k]
     '''
+
     def __init__(self):
         self.output = None
         self.local_gradient = None
@@ -95,7 +96,8 @@ class Node(object):
 
         '''Argument nodes z_i will query this node f(z_1, ..., z_k) for ∂f/∂z_i, so we need to keep
         track of the index for each argument node.'''
-        self.argument_to_index = {node: index for (index, node) in enumerate(arguments)}
+        self.argument_to_index = {node: index for (
+            index, node) in enumerate(arguments)}
 
     def do_gradient_descent_step(self, step_size):
         '''The core gradient step subroutine: compute the gradient for each of this node's
@@ -114,7 +116,8 @@ class Node(object):
         training, such as an error node.
         '''
         return sum(
-            successor.global_gradient * successor.local_gradient_for_argument(self)
+            successor.global_gradient *
+            successor.local_gradient_for_argument(self)
             for successor in self.successors
         )
 
@@ -198,6 +201,7 @@ class ReluNode(Node):
     '''A node for a rectified linear unit (ReLU), i.e. the one-input,
     one-output function relu(x) = max(0, x).
     '''
+
     def compute_output(self, inputs):
         argument_value = self.arguments[0].evaluate(inputs)
         return max(0, argument_value)
@@ -224,6 +228,7 @@ class SigmoidNode(Node):
     '''A node for a classical sigmoid unit, i.e. the one-input,
     one-output function s(x) = max(0, x).
     '''
+
     def compute_output(self, inputs):
         argument_value = self.arguments[0].evaluate(inputs)
         exp_value = math.exp(argument_value)
@@ -250,6 +255,7 @@ class SigmoidNode(Node):
 class ConstantNode(Node):
     '''A constant (untrainable) node, used as the input to the "bias" entry
        of a linear node.'''
+
     def compute_output(self, inputs):
         return 1
 
@@ -276,12 +282,14 @@ class LinearNode(Node):
         arglen = len(self.arguments)
         if initial_weights:
             if len(initial_weights) != arglen:
-                raise Exception("Invalid initial_weights length {:d}".format(len(initial_weights)))
+                raise Exception(
+                    "Invalid initial_weights length {:d}".format(len(initial_weights)))
             self.weights = initial_weights
         else:
             # set the initial weights randomly, according to a heuristic distribution
             weight_bound = 1.0 / math.sqrt(arglen)
-            self.weights = [random.uniform(-weight_bound, weight_bound) for _ in range(arglen)]
+            self.weights = [
+                random.uniform(-weight_bound, weight_bound) for _ in range(arglen)]
 
     def compute_output(self, inputs):
         return sum(
@@ -297,7 +305,8 @@ class LinearNode(Node):
 
     def compute_global_parameter_gradient(self):
         return [
-            self.global_gradient * self.local_parameter_gradient_for_argument(argument)
+            self.global_gradient *
+            self.local_parameter_gradient_for_argument(argument)
             for argument in self.arguments
         ]
 
@@ -308,10 +317,12 @@ class LinearNode(Node):
         return self.local_parameter_gradient[argument_index]
 
     def pretty_print(self, tabs=0):
-        argument_strs = '\n'.join(arg.pretty_print(tabs + 1) for arg in self.arguments)
+        argument_strs = '\n'.join(arg.pretty_print(tabs + 1)
+                                  for arg in self.arguments)
         prefix = "  " * tabs
         weights = ','.join(['%.2f' % w for w in self.weights])
-        gradient = ','.join(['%.2f' % w for w in self.global_parameter_gradient])
+        gradient = ','.join(
+            ['%.2f' % w for w in self.global_parameter_gradient])
         return "{}Linear weights={} gradient={} output={:.2f}\n{}\n".format(
             prefix, weights, gradient, self.output, argument_strs)
 
@@ -322,6 +333,7 @@ class L2ErrorNode(Node):
     The function is f(z(x), y) = (z(x) - y)^2, where (x, y) is a labeled
     example and z(x) is the rest of the computation graph.
     '''
+
     def compute_error(self, inputs, label):
         argument_value = self.arguments[0].evaluate(inputs)
         self.label = label  # cache the label
@@ -376,7 +388,6 @@ class NeuralNetwork(object):
         '''dataset is a list of pairs ([float], int) where the first entry is
         the data point and the second is the label.
         '''
-        example_index = 0
         for i in range(max_steps):
             inputs, label = random.choice(dataset)
             self.backpropagation_step(inputs, label, self.step_size)
@@ -390,7 +401,8 @@ class NeuralNetwork(object):
         def callback(network, dataset):
             print()
             for (inputs, label) in dataset:
-                print("network({}) = {} (should be {})".format(inputs, network.evaluate(inputs), label))
+                print("network({}) = {} (should be {})".format(
+                    inputs, network.evaluate(inputs), label))
             print(network.pretty_print())
             ans = input('Continue? [Y/n] ')
             if ans and ans[0].lower() == 'n':

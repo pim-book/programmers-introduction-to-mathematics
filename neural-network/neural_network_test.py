@@ -12,7 +12,8 @@ def single_linear_relu(input_nodes, initial_weights=None):
 
 def single_linear_relu_network(node_count, initial_weights):
     input_nodes = InputNode.make_input_nodes(node_count)
-    relu_node = single_linear_relu(input_nodes, initial_weights=initial_weights)
+    relu_node = single_linear_relu(
+        input_nodes, initial_weights=initial_weights)
     error_node = L2ErrorNode(relu_node)
     return NeuralNetwork(relu_node, input_nodes, error_node=error_node)
 
