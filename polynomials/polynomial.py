@@ -62,9 +62,6 @@ class Polynomial(object):
     def __sub__(self, other):
         return self + (-other)
 
-    def __abs__(self):
-        return len(self.coefficients)
-
     def __call__(self, *args):
         return self.evaluateAt(args[0])
 

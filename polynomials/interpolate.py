@@ -1,4 +1,5 @@
 from polynomial import Polynomial
+from polynomial import ZERO
 
 
 def singleTerm(points, i):
@@ -32,4 +33,4 @@ def interpolate(points):
         raise ValueError('Not all x values are distinct.')
 
     terms = [singleTerm(points, i) for i in range(0, len(points))]
-    return sum(terms, Polynomial([]))
+    return sum(terms, ZERO)
