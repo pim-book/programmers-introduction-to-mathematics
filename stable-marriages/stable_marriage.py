@@ -4,11 +4,14 @@ import itertools
 class Suitor:
     def __init__(self, id, preference_list):
         self.preference_list = preference_list
-        self.rejections = 0  # num rejections is also the index of the next option
+        self.index_to_propose_to = 0  # preference list is in order
         self.id = id
 
     def preference(self):
-        return self.preference_list[self.rejections]
+        return self.preference_list[self.index_to_propose_to]
+
+    def post_rejection(self):
+        self.index_to_propose_to += 1
 
     def __eq__(self, other):
         return isinstance(other, Suitor) and self.id == other.id
@@ -28,18 +31,21 @@ class Suited:
         self.id = id
 
     def reject(self):
+        """Return the subset of Suitors in self.current_suitors to reject,
+        leaving only the held Suitor in self.current_suitors.
+        """
         if len(self.current_suitors) == 0:
             return set()
-
-        if self.held is not None:
-            self.current_suitors.add(self.held)
 
         self.held = min(self.current_suitors,
                         key=lambda suitor: self.preference_list.index(suitor.id))
         rejected = self.current_suitors - set([self.held])
-        self.current_suitors = set()
+        self.current_suitors = set([self.held])
 
         return rejected
+
+    def add_suitor(self, suitor):
+        self.current_suitors.add(suitor)
 
     def __eq__(self, other):
         return isinstance(other, Suited) and self.id == other.id
@@ -65,14 +71,15 @@ def stable_marriage(suitors, suiteds):
 
     while len(unassigned) > 0:
         for suitor in unassigned:
-            suiteds[suitor.preference()].current_suitors.add(suitor)
+            next_to_propose_to = suiteds[suitor.preference()]
+            next_to_propose_to.add_suitor(suitor)
         unassigned = set()
 
         for suited in suiteds:
             unassigned |= suited.reject()
 
         for suitor in unassigned:
-            suitor.rejections += 1
+            suitor.post_rejection()  # have some ice cream
 
     return dict([(suited.held, suited) for suited in suiteds])
 
