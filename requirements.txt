@@ -3,8 +3,14 @@ atomicwrites==1.2.1
 attrs==18.2.0
 coverage==4.5.1
 more-itertools==4.3.0
+nltk==3.2.1
+numpy==1.13.3
 pluggy==0.7.1
 py==1.6.0
-pytest==3.8.0
+pyparsing==2.2.0
 pytest-cov==2.6.0
+pytest==3.8.0
+scipy==0.17.0
 six==1.11.0
+svgwrite==1.1.12
+matplotlib==2.1.1
