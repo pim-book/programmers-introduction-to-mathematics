@@ -1,2 +1,9 @@
 [run]
-omit = venv/*,__pycache__/*,*test.py
+omit = venv/*,__pycache__/*,*test.py,*testing.py
+
+[report]
+exclude_lines =
+    pragma: no cover
+    def __repr__
+    raise NotImplementedError
+    if __name__ == .__main__.:

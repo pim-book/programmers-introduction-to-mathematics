@@ -24,20 +24,8 @@ def single_linear_relu_network(node_count, initial_weights):
     return NeuralNetwork(relu_node, input_nodes, error_node=error_node)
 
 
-def test_node_base_class_unimplemented_methods():
+def test_node_missing_output():
     node = Node()
-    with pytest.raises(NotImplementedError):
-        node.compute_output()
-
-    with pytest.raises(NotImplementedError):
-        node.compute_local_gradient()
-
-    with pytest.raises(NotImplementedError):
-        node.compute_local_parameter_gradient()
-
-    with pytest.raises(NotImplementedError):
-        node.compute_global_parameter_gradient()
-
     with pytest.raises(Exception):
         node.output
 
