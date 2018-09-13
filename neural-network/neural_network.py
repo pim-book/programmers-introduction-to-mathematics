@@ -384,7 +384,7 @@ class NeuralNetwork:
         self.compute_error(inputs, label)
         self.for_each(lambda node: node.do_gradient_descent_step(step_size))
 
-    def train(self, dataset, max_steps=10000, callback=None):
+    def train(self, dataset, max_steps=10000):
         '''dataset is a list of pairs ([float], int) where the first entry is
         the data point and the second is the label.
         '''
@@ -392,23 +392,8 @@ class NeuralNetwork:
             inputs, label = random.choice(dataset)
             self.backpropagation_step(inputs, label, self.step_size)
 
-            if callback and i % 100 == 0:
-                callback(self, dataset)
-            elif i % int(max_steps / 10) == 0:
+            if i % int(max_steps / 10) == 0:
                 print('{:2.1f}%'.format(100 * i / max_steps))
-
-    def train_while_watching(self, dataset, max_steps):
-        def callback(network, dataset):
-            print()
-            for (inputs, label) in dataset:
-                print("network({}) = {} (should be {})".format(
-                    inputs, network.evaluate(inputs), label))
-            print(network.pretty_print())
-            ans = input('Continue? [Y/n] ')
-            if ans and ans[0].lower() == 'n':
-                raise Exception("Stopping early.")
-
-        self.train(dataset, max_steps, callback)
 
     def error_on_dataset(self, dataset):
         errors = 0
