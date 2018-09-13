@@ -86,21 +86,3 @@ def svd(A, k=None, epsilon=1e-10):
 
     singular_values, us, vs = [np.array(x) for x in zip(*svd_so_far)]
     return singular_values, us.T, vs
-
-
-if __name__ == "__main__":
-    movie_ratings = np.array([
-        [2, 5, 3],
-        [1, 2, 1],
-        [4, 1, 1],
-        [3, 5, 2],
-        [5, 3, 1],
-        [4, 5, 5],
-        [2, 4, 2],
-        [2, 2, 5],
-    ], dtype='float64')
-
-    # v1 = svd_1d(movie_ratings)
-    # print(v1)
-
-    theSVD = svd(movie_ratings)
