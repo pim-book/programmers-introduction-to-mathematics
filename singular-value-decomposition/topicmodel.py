@@ -1,6 +1,5 @@
-'''
-    A simple topic model using singular value decomposition
-    applied to a corpus of CNN stories.
+'''A simple topic model using singular value decomposition
+applied to a corpus of CNN stories.
 '''
 import json
 import numpy as np
@@ -44,7 +43,6 @@ def make_document_term_matrix(documents):
         documents: a list of dictionaries of the form
 
             {
-                'filename': string
                 'words': [string]
                 'text': string
             }
@@ -70,6 +68,7 @@ def make_document_term_matrix(documents):
 
 
 def cluster(vectors):
+    print(vectors)
     return kmeans2(vectors, k=len(vectors[0]))
 
 
@@ -86,11 +85,28 @@ def load():
         return json.loads(infile.read())
 
 
-def cluster_stories(documents):
+def cluster_stories(documents, k=10):
+    '''Cluster a set of documents using a simple SVD-based topic model.
+
+    Arguments:
+        documents: a list of dictionaries of the form
+
+            {
+                'words': [string]
+                'text': string
+            }
+
+        k: the number of singular values to compute.
+
+    Returns:
+        A pair of (word_clusters, document_clusters), where word_clusters
+        is a clustering over the set of all words in all documents, and
+        document_clustering is a clustering over the set of documents.
+    '''
     matrix, (index_to_word, index_to_document) = make_document_term_matrix(
         documents)
     matrix = normalize(matrix)
-    sigma, U, V = svd(matrix, k=10)
+    sigma, U, V = svd(matrix, k=k)
 
     projected_documents = np.dot(matrix.T, U)
     projected_words = np.dot(matrix, V.T)
@@ -98,16 +114,16 @@ def cluster_stories(documents):
     document_centers, document_clustering = cluster(projected_documents)
     word_centers, word_clustering = cluster(projected_words)
 
-    word_clusters = [
-        [index_to_word[i] for (i, x) in enumerate(word_clustering) if x == j]
+    word_clusters = tuple(
+        tuple(index_to_word[i] for (i, x) in enumerate(word_clustering) if x == j)
         for j in range(len(set(word_clustering)))
-    ]
+    )
 
-    document_clusters = [
-        [index_to_document[i]['text']
-         for (i, x) in enumerate(document_clustering) if x == j]
+    document_clusters = tuple(
+        tuple(index_to_document[i]['text']
+         for (i, x) in enumerate(document_clustering) if x == j)
         for j in range(len(set(document_clustering)))
-    ]
+    )
 
     return word_clusters, document_clusters
 
