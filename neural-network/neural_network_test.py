@@ -1,6 +1,7 @@
 from assertpy import assert_that
 import pytest
 
+from neural_network import CachedNodeData
 from neural_network import ConstantNode
 from neural_network import InputNode
 from neural_network import L2ErrorNode
@@ -41,6 +42,31 @@ def test_node_base_class_unimplemented_methods():
         node.output
 
 
+def test_cache_repr():
+    cache = CachedNodeData()
+    cache.output = 1
+    cache.local_gradient = 2
+    cache.global_gradient = 3
+    cache.local_parameter_gradient = 4
+    cache.global_parameter_gradient = 5
+
+    assert_that(repr(cache)).is_equal_to(
+        "{'output': 1, "
+        "'local_gradient': 2, "
+        "'global_gradient': 3, "
+        "'local_parameter_gradient': 4, "
+        "'global_parameter_gradient': 5}")
+
+
+def test_linear_node_bad_initialization():
+    input_nodes = InputNode.make_input_nodes(3)
+    inputs = [1, 2, 3]
+    initial_weights = [4, 3, 2, 1, 1]
+    with pytest.raises(Exception):
+        linear_node = LinearNode(
+            input_nodes, initial_weights=initial_weights)
+
+
 def test_sigmoid_node_empty_parameters():
     node = SigmoidNode()
     assert_that(node.compute_local_parameter_gradient()).is_empty()
@@ -62,9 +88,9 @@ def test_pretty_print():
 
     network = single_linear_relu_network(3, [-20, 3, 2, 1])
     network.evaluate([1, 2, 3])
-    network.compute_error([1,2,3], 1)
+    network.compute_error([1, 2, 3], 1)
     assert_that(network.pretty_print()).is_equal_to(
-   """Relu output=0.00
+        """Relu output=0.00
   Linear weights=-20.00,3.00,2.00,1.00 gradient=0.00,0.00,0.00,0.00 output=-10.00
     Constant(1)
     InputNode(0) output = 1.00
@@ -168,6 +194,12 @@ def test_neural_network_reset():
     network = single_linear_relu_network(2, [3, 2, 1])
     assert_that(network.evaluate([2, -2])).is_equal_to(5)
     assert network.evaluate([6, -2]) != 5
+
+
+def test_neural_network_errors_on_dataset():
+    network = single_linear_relu_network(2, [3, 2, 1])
+    dataset = [((2, -2), 5), ((6, -2), 5)]
+    assert_that(network.error_on_dataset(dataset)).is_close_to(0.5, 1e-9)
 
 
 def test_neural_network_gradients():
