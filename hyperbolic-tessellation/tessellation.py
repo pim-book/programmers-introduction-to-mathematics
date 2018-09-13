@@ -83,7 +83,8 @@ class HyperbolicTessellation(object):
 
         # compute the vertices of the center polygon via reflection
         self.center_polygon = self.compute_center_polygon()
-        self.tessellated_polygons = self.tessellate(max_polygon_count=max_polygon_count)
+        self.tessellated_polygons = self.tessellate(
+            max_polygon_count=max_polygon_count)
 
     def compute_center_polygon(self):
         center, top_vertex, x_axis_vertex = compute_fundamental_triangle(
@@ -149,7 +150,8 @@ class HyperbolicTessellation(object):
         boundary_circle.fill(color='white', opacity=0)
         self.dwg.add(boundary_circle)
 
-        polygon_group = self.dwg.add(self.dwg.g(id='polygons', stroke='blue', stroke_width=1))
+        polygon_group = self.dwg.add(self.dwg.g(
+            id='polygons', stroke='blue', stroke_width=1))
         for polygon in self.tessellated_polygons:
             self.render_polygon(polygon, polygon_group)
 
@@ -190,17 +192,3 @@ class HyperbolicTessellation(object):
             absolute=True)
 
         group.add(path)
-
-
-if __name__ == "__main__":
-    for p in range(3, 8):
-        for q in range(3, 8):
-            if (p - 2) * (q - 2) > 4:
-                print(p, q)
-                try:
-                    config = TessellationConfiguration(p, q)
-                    tessellation = HyperbolicTessellation(config)
-                    tessellation.render(filename="svg/tessellation_{}_{}.svg".format(p, q), canvas_width=500)
-                except Exception:
-                    print("failed")
-                    raise
