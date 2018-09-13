@@ -6,6 +6,23 @@ from geometry import *
 from testing import *
 
 
+def test_are_close():
+    pts1 = [Point(1.0, 2.0), Point(3.0, 3.999999999999999999)]
+    pts2 = [Point(0.99999999999999, 2.0), Point(3.0, 4.0)]
+    assert_that(are_close(pts1, pts2)).is_true()
+
+
+def test_are_close_false():
+    pts1 = [Point(1.0, 2.0), Point(3.0, 4.0)]
+    pts2 = [Point(0.9, 2.0), Point(3.0, 4.0)]
+    assert_that(are_close(pts1, pts2)).is_false()
+
+
+def test_bounding_box_area():
+    pts = [Point(1.0, 2.0), Point(3.0, 4.0), Point(5.0, 6.0)]
+    assert_that(bounding_box_area(pts)).is_equal_to(4.0 * 4.0)
+
+
 def test_line_y_value():
     line = Line(Point(2, 3), slope=4)
     assert_that(line.y_value(x_value=4)).is_equal_to(11)
@@ -20,8 +37,8 @@ def test_vertical_line_y_value():
 def test_line_eq():
     line1 = Line(Point(1, 0), slope=2)
     line2 = Line(Point(2, 2), slope=2)
-    assert_that(line1 == line2).is_true()
-    assert_that(line2 == line1).is_true()
+    assert_that(line1).is_equal_to(line2)
+    assert_that(line2).is_equal_to(line1)
 
 
 def test_line_neq():
