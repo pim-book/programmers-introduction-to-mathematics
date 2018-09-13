@@ -2,7 +2,7 @@ import math
 import random
 
 
-class CachedNodeData(object):
+class CachedNodeData:
     '''A simple cache for node-specific data used in evaluation and training
     for a single labeled example.
 
@@ -46,7 +46,7 @@ class CachedNodeData(object):
         return "{}".format(vars(self))
 
 
-class Node(object):
+class Node:
     '''A node of a computation graph.
 
     Attributes
@@ -164,16 +164,16 @@ class Node(object):
         return self.cache.global_parameter_gradient
 
     def compute_output(self):
-        raise Exception("Not implemented")
+        raise NotImplementedError()
 
     def compute_local_parameter_gradient(self):
-        raise Exception("Not implemented")
+        raise NotImplementedError()
 
     def compute_local_gradient(self):
-        raise Exception("Not implemented")
+        raise NotImplementedError()
 
     def compute_global_parameter_gradient(self):
-        raise Exception("Not implemented")
+        raise NotImplementedError()
 
 
 class InputNode(Node):
@@ -347,7 +347,7 @@ class L2ErrorNode(Node):
         return 1
 
 
-class NeuralNetwork(object):
+class NeuralNetwork:
     def __init__(self, terminal_node, input_nodes, error_node=None, step_size=None):
         self.terminal_node = terminal_node
         self.input_nodes = input_nodes
