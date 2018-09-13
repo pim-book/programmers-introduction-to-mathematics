@@ -87,7 +87,8 @@ def load():
 
 
 def cluster_stories(documents):
-    matrix, (index_to_word, index_to_document) = make_document_term_matrix(documents)
+    matrix, (index_to_word, index_to_document) = make_document_term_matrix(
+        documents)
     matrix = normalize(matrix)
     sigma, U, V = svd(matrix, k=10)
 
@@ -98,8 +99,8 @@ def cluster_stories(documents):
     word_centers, word_clustering = cluster(projected_words)
 
     word_clusters = [
-        [index_to_word[i] for (i, x) in enumerate(wordClustering) if x == j]
-        for j in range(len(set(wordClustering)))
+        [index_to_word[i] for (i, x) in enumerate(word_clustering) if x == j]
+        for j in range(len(set(word_clustering)))
     ]
 
     document_clusters = [
@@ -109,6 +110,7 @@ def cluster_stories(documents):
     ]
 
     return word_clusters, document_clusters
+
 
 if __name__ == "__main__":
     word_clusters, document_clusters = cluster_stories(load())

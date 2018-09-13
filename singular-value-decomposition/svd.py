@@ -5,19 +5,27 @@ from random import normalvariate
 from math import sqrt
 
 
-def randomUnitVector(n):
+def random_unit_vector(n):
     unnormalized = [normalvariate(0, 1) for _ in range(n)]
-    theNorm = sqrt(sum(x * x for x in unnormalized))
-    return [x / theNorm for x in unnormalized]
+    the_norm = sqrt(sum(x * x for x in unnormalized))
+    return [x / the_norm for x in unnormalized]
 
 
 def svd_1d(A, epsilon=1e-10):
-    ''' The one-dimensional SVD '''
+    '''Compute the one-dimensional SVD.
+
+    Arguments:
+        A: an n-by-m matrix
+        epsilon: a tolerance
+
+    Returns:
+        the top singular vector of A.
+    '''
 
     n, m = A.shape
-    x = randomUnitVector(min(n,m))
-    lastV = None
-    currentV = x
+    x = random_unit_vector(min(n, m))
+    last_v = None
+    current_v = x
 
     if n > m:
         B = np.dot(A.T, A)
@@ -27,53 +35,61 @@ def svd_1d(A, epsilon=1e-10):
     iterations = 0
     while True:
         iterations += 1
-        lastV = currentV
-        currentV = np.dot(B, lastV)
-        currentV = currentV / norm(currentV)
+        last_v = current_v
+        current_v = np.dot(B, last_v)
+        current_v = current_v / norm(current_v)
 
-        if abs(np.dot(currentV, lastV)) > 1 - epsilon:
+        if abs(np.dot(current_v, last_v)) > 1 - epsilon:
             print("converged in {} iterations!".format(iterations))
-            return currentV
+            return current_v
 
 
 def svd(A, k=None, epsilon=1e-10):
-    '''
-        Compute the singular value decomposition of a matrix A
-        using the power method. A is the input matrix, and k
-        is the number of singular values you wish to compute.
-        If k is None, this computes the full-rank decomposition.
+    '''Compute the singular value decomposition of a matrix A using
+    the power method.
+
+    Arguments:
+        A: an n-by-m matrix
+        k: the number of singular values to compute
+           If k is None, compute the full-rank decomposition.
+        epsilon: a tolerance factor
+
+    Returns:
+        A tuple (S, u, v), where S is a list of singular values,
+        u is an n-by-k matrix containing the left singular vectors,
+        v is a k-by-m matrix containnig the right-singular-vectors
     '''
     A = np.array(A, dtype=float)
     n, m = A.shape
-    svdSoFar = []
+    svd_so_far = []
     if k is None:
         k = min(n, m)
 
     for i in range(k):
-        matrixFor1D = A.copy()
+        matrix_for_1d = A.copy()
 
-        for singularValue, u, v in svdSoFar[:i]:
-            matrixFor1D -= singularValue * np.outer(u, v)
+        for singular_value, u, v in svd_so_far[:i]:
+            matrix_for_1d -= singular_value * np.outer(u, v)
 
         if n > m:
-            v = svd_1d(matrixFor1D, epsilon=epsilon)  # next singular vector
+            v = svd_1d(matrix_for_1d, epsilon=epsilon)  # next singular vector
             u_unnormalized = np.dot(A, v)
             sigma = norm(u_unnormalized)  # next singular value
             u = u_unnormalized / sigma
         else:
-            u = svd_1d(matrixFor1D, epsilon=epsilon)  # next singular vector
+            u = svd_1d(matrix_for_1d, epsilon=epsilon)  # next singular vector
             v_unnormalized = np.dot(A.T, u)
             sigma = norm(v_unnormalized)  # next singular value
             v = v_unnormalized / sigma
 
-        svdSoFar.append((sigma, u, v))
+        svd_so_far.append((sigma, u, v))
 
-    singularValues, us, vs = [np.array(x) for x in zip(*svdSoFar)]
-    return singularValues, us.T, vs
+    singular_values, us, vs = [np.array(x) for x in zip(*svd_so_far)]
+    return singular_values, us.T, vs
 
 
 if __name__ == "__main__":
-    movieRatings = np.array([
+    movie_ratings = np.array([
         [2, 5, 3],
         [1, 2, 1],
         [4, 1, 1],
@@ -84,7 +100,7 @@ if __name__ == "__main__":
         [2, 2, 5],
     ], dtype='float64')
 
-    # v1 = svd_1d(movieRatings)
+    # v1 = svd_1d(movie_ratings)
     # print(v1)
 
-    theSVD = svd(movieRatings)
+    theSVD = svd(movie_ratings)
