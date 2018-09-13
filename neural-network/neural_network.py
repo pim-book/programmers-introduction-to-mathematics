@@ -193,7 +193,7 @@ class InputNode(Node):
 
     def pretty_print(self, tabs=0):
         prefix = "  " * tabs
-        return "{}InputNode({}) output = {}".format(
+        return "{}InputNode({}) output = {:.2f}".format(
             prefix, self.input_index, self.output)
 
 
@@ -226,7 +226,7 @@ class ReluNode(Node):
 
 class SigmoidNode(Node):
     '''A node for a classical sigmoid unit, i.e. the one-input,
-    one-output function s(x) = max(0, x).
+    one-output function s(x) = e^x / (e^x + 1)
     '''
 
     def compute_output(self, inputs):

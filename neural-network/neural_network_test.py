@@ -1,14 +1,26 @@
 from assertpy import assert_that
 import pytest
-import random
 
-from neural_network import Node
+from neural_network import ConstantNode
 from neural_network import InputNode
 from neural_network import L2ErrorNode
 from neural_network import LinearNode
 from neural_network import NeuralNetwork
+from neural_network import Node
 from neural_network import ReluNode
 from neural_network import SigmoidNode
+
+
+def single_linear_relu(input_nodes, initial_weights=None):
+    return ReluNode(LinearNode(input_nodes, initial_weights=initial_weights))
+
+
+def single_linear_relu_network(node_count, initial_weights):
+    input_nodes = InputNode.make_input_nodes(node_count)
+    relu_node = single_linear_relu(
+        input_nodes, initial_weights=initial_weights)
+    error_node = L2ErrorNode(relu_node)
+    return NeuralNetwork(relu_node, input_nodes, error_node=error_node)
 
 
 def test_node_base_class_unimplemented_methods():
@@ -25,17 +37,41 @@ def test_node_base_class_unimplemented_methods():
     with pytest.raises(NotImplementedError):
         node.compute_global_parameter_gradient()
 
+    with pytest.raises(Exception):
+        node.output
 
-def single_linear_relu(input_nodes, initial_weights=None):
-    return ReluNode(LinearNode(input_nodes, initial_weights=initial_weights))
+
+def test_sigmoid_node_empty_parameters():
+    node = SigmoidNode()
+    assert_that(node.compute_local_parameter_gradient()).is_empty()
+    assert_that(node.compute_global_parameter_gradient()).is_empty()
 
 
-def single_linear_relu_network(node_count, initial_weights):
-    input_nodes = InputNode.make_input_nodes(node_count)
-    relu_node = single_linear_relu(
-        input_nodes, initial_weights=initial_weights)
-    error_node = L2ErrorNode(relu_node)
-    return NeuralNetwork(relu_node, input_nodes, error_node=error_node)
+def test_pretty_print():
+    const = ConstantNode()
+    input_node = InputNode(0)
+    sigmoid = SigmoidNode(const)
+    sigmoid.evaluate([])
+    relu = ReluNode(input_node)
+    relu.evaluate([2])
+
+    assert_that(sigmoid.pretty_print()).is_equal_to(
+        "Sigmoid output=0.73\n  Constant(1)\n")
+    assert_that(relu.pretty_print()).is_equal_to(
+        "Relu output=2.00\n  InputNode(0) output = 2.00\n")
+
+    network = single_linear_relu_network(3, [-20, 3, 2, 1])
+    network.evaluate([1, 2, 3])
+    network.compute_error([1,2,3], 1)
+    assert_that(network.pretty_print()).is_equal_to(
+   """Relu output=0.00
+  Linear weights=-20.00,3.00,2.00,1.00 gradient=0.00,0.00,0.00,0.00 output=-10.00
+    Constant(1)
+    InputNode(0) output = 1.00
+    InputNode(1) output = 2.00
+    InputNode(2) output = 3.00
+
+""")
 
 
 def test_input_output():
@@ -195,64 +231,3 @@ def test_neural_network_backpropagation_step():
 
     # ∂E/∂w_i = [8, 16, -16], delta is [-4, -8, 8]
     assert_that(linear_node.weights).is_equal_to(new_weights)
-
-
-'''
-The remaining tests have some chance of failing due to the randomness in
-their initialization. Remove the fixing of the random seed to observe
-that they sometimes fail.
-'''
-
-
-def test_learn_xor_sigmoid():
-    random.seed(1)
-    input_nodes = InputNode.make_input_nodes(2)
-    linear_node_1 = LinearNode(input_nodes)
-    linear_node_2 = LinearNode(input_nodes)
-    linear_node_3 = LinearNode(input_nodes)
-    sigmoid_node_1 = SigmoidNode(linear_node_1)
-    sigmoid_node_2 = SigmoidNode(linear_node_2)
-    sigmoid_node_3 = SigmoidNode(linear_node_3)
-    linear_output = LinearNode(
-        [sigmoid_node_1, sigmoid_node_2, sigmoid_node_3])
-    output = SigmoidNode(linear_output)
-    error_node = L2ErrorNode(output)
-    network = NeuralNetwork(
-        output, input_nodes, error_node=error_node, step_size=0.5)
-
-    examples = [[0, 0], [0, 1], [1, 0], [1, 1]]
-    labels = [0, 1, 1, 0]
-    dataset = list(zip(examples, labels))
-
-    network.train(dataset, max_steps=10000)
-    for (example, label) in dataset:
-        assert_that(network.evaluate(example)).is_close_to(label, 0.1)
-
-    assert_that(network.error_on_dataset(dataset)).is_equal_to(0.0)
-
-
-def test_learn_xor_relu():
-    random.seed(1)
-    input_nodes = InputNode.make_input_nodes(2)
-
-    first_layer = [LinearNode(input_nodes) for i in range(10)]
-    first_layer_relu = [ReluNode(L) for L in first_layer]
-
-    second_layer = [LinearNode(first_layer_relu) for i in range(10)]
-    second_layer_relu = [ReluNode(L) for L in second_layer]
-
-    linear_output = LinearNode(second_layer_relu)
-    output = linear_output
-    error_node = L2ErrorNode(output)
-    network = NeuralNetwork(
-        output, input_nodes, error_node=error_node, step_size=0.05)
-
-    examples = [[0, 0], [0, 1], [1, 0], [1, 1]]
-    labels = [0, 1, 1, 0]
-    dataset = list(zip(examples, labels))
-
-    network.train(dataset, max_steps=1000)
-    for (example, label) in dataset:
-        assert abs(network.evaluate(example) - label) < 0.1
-
-    assert_that(network.error_on_dataset(dataset)).is_equal_to(0.0)
