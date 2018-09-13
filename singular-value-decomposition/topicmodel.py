@@ -80,8 +80,8 @@ def all_words(documents):
     return list(sorted(words))
 
 
-def load():
-    with open('all_stories.json', 'r') as infile:
+def load(filename='all_stories.json'):
+    with open(filename, 'r') as infile:
         return json.loads(infile.read())
 
 
