@@ -6,15 +6,13 @@ def newton_sequence(f, f_derivative,  starting_x):
         x -= f(x) / f_derivative(x)
 
 
-def f(x):
-    return x**5 - x - 1
-
-
-def f_derivative(x):
-    return 5 * x**4 - 1
-
-
 if __name__ == "__main__":
+    def f(x):
+        return x**5 - x - 1
+
+    def f_derivative(x):
+        return 5 * x**4 - 1
+
     starting_x = 1
     # starting_x = 0  # try this for a case that fails to converge
 
