@@ -4,21 +4,27 @@ import matplotlib.pyplot as plt
 import numpy
 
 
-markers = ['o', 'v', 's', '+', 'x', 'd', 'p', '*']
+markers = ["o", "v", "s", "+", "x", "d", "p", "*"]
 
 
 def shift(array, shift_amount):
-    '''
-    shift a list right (positive) or left (negative) by a given amount,
+    """Shift a list right (positive) or left (negative) by a given amount,
     filling new entries with zero.
 
-    >>> shift([1,-2,1,0,0], 1)
-    [0,1,-2,1,0]
-    >>> shift([1,-2,1,0,0], 3)
-    [0,0,0,1,-2]
-    >>> shift([1,-2,1,0,0], -1)
-    [-2,1,0,0,0]
-    '''
+    Arguments:
+        array: the array to shift
+        shift_amount: an integer number of places to shift.
+
+    Returns:
+        A shifted array, with new entries being zero.
+
+    >>> shift([1, -2, 1, 0, 0], 1)
+    [0, 1, -2, 1, 0]
+    >>> shift([1, -2, 1, 0, 0], 3)
+    [0, 0, 0, 1, -2]
+    >>> shift([1, -2, 1, 0, 0], -1)
+    [-2, 1, 0, 0, 0]
+    """
     queue = deque(array)
     if shift_amount < 0:
         queue.reverse()
@@ -34,6 +40,14 @@ def shift(array, shift_amount):
 
 
 def bead_matrix(dimension=5):
+    """Return the matrix corresponding to a system of beads on a string.
+
+    Arguments:
+        dimension: the number of beads, at least 4
+
+    Returns:
+        A dimension-by-dimension numpy matrix representing the linear system.
+    """
     if dimension < 4:
         raise Exception("dimension must be at least 4")
     base = [1, -2, 1] + [0] * (dimension - 3)
@@ -41,6 +55,17 @@ def bead_matrix(dimension=5):
 
 
 def sorted_eigensystem(matrix, top_k=None):
+    """Compute the eigensystem of the given matrix, sorted by eigenvalue.
+
+    Arguments:
+        matrix: an n-by-n matrix
+        top_k: the number of eigenvectors to compute. If None, k is set to n.
+
+    Returns:
+        A pair (values, vectors) where values is a list of top_k
+        eigenvalues, sorted from largest to smallest, and vectors
+        is a list of the corresponding eigenvectors.
+    """
     top_k = top_k or len(matrix)
     eigenvalues, eigenvectors = numpy.linalg.eig(matrix)
 
@@ -54,8 +79,16 @@ def sorted_eigensystem(matrix, top_k=None):
 
 
 def decompose(eigenvectors, vector):
-    # return a dict d:index -> coefficient so that the input vector is equal to
-    # sum(d[i] * eigenvectors[i] for i in range(len(vector)))
+    """Decompose the given vector in terms of the given eigenvectors.
+
+    Arguments:
+        eigenvectors: a list of eigenvectors to use as a basis.
+        vector: the vector to decompose.
+
+    Returns:
+        A dict d of type {index: coefficient} so that the input vector is equal to
+        sum(d[i] * eigenvectors[i] for i in range(len(vector))).
+    """
     coefficients = {}
     for i in range(len(vector)):
         coefficients[i] = numpy.dot(vector, eigenvectors[i])
@@ -82,7 +115,7 @@ def create_and_save_plots():
 
     print("%s | %s" % ("eigenvalue", "eigenvector"))
     for val, vec in zip(eigenvalues, eigenvectors):
-        vec_str = ', '.join(['%5.2f' % entry for entry in vec])
+        vec_str = ", ".join(["%5.2f" % entry for entry in vec])
         print("%10.2f | %s" % (val, vec_str))
 
     fig1 = plot_eigenvectors(eigensystem)
@@ -102,4 +135,3 @@ if __name__ == "__main__":
     reconstructed = numpy.sum(
         [coeffs[i] * eigenvectors[i] for i in range(5)], axis=0)
     print("w={}\nreconstructed={}".format(w, reconstructed))
-
