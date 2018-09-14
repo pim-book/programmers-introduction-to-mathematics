@@ -74,7 +74,7 @@ def train_mnist(data_dirname, num_epochs=5):
     try:
         train = load_1s_and_7s(train_file)
         test = load_1s_and_7s(test_file)
-    except Exception:
+    except Exception:  # pragma: no cover
         print(cant_find_files.format(train_file, test_file))
         raise
 
