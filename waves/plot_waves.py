@@ -1,5 +1,7 @@
 import numpy
 
+from waves import *
+
 
 markers = ["o", "v", "s", "+", "x", "d", "p", "*"]
 
@@ -36,12 +38,4 @@ def create_and_save_plots():
 
 if __name__ == "__main__":
     import matplotlib.pyplot as plt
-
-    A = bead_matrix(5)
-    eigensystem = sorted_eigensystem(A)
-    eigenvalues, eigenvectors = eigensystem
-    w = [0, 0.5, 0, 0, 0]
-    coeffs = decompose(eigenvectors, w)
-    reconstructed = numpy.sum(
-        [coeffs[i] * eigenvectors[i] for i in range(5)], axis=0)
-    print("w={}\nreconstructed={}".format(w, reconstructed))
+    create_and_save_plots()
