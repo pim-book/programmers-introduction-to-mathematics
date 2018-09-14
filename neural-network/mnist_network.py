@@ -5,6 +5,7 @@ from neural_network import NeuralNetwork
 from neural_network import ReluNode
 from neural_network import SigmoidNode
 from random import shuffle
+import os
 import sys
 
 
@@ -67,20 +68,21 @@ You may have to extract them from the gzipped tarball mnist/mnist.tar.gz.
 '''
 
 
-if __name__ == "__main__":
+def train_mnist(data_dirname, num_epochs=5):
+    train_file = os.path.join(data_dirname, 'mnist_train.csv')
+    test_file = os.path.join(data_dirname, 'mnist_test.csv')
     try:
-        train = load_1s_and_7s('mnist/mnist_train.csv')
-        test = load_1s_and_7s('mnist/mnist_test.csv')
+        train = load_1s_and_7s(train_file)
+        test = load_1s_and_7s(test_file)
     except Exception:
-        print(cant_find_files.format(
-            'mnist/mnist_train.csv', 'mnist/mnist_test.csv'))
-        sys.exit(1)
+        print(cant_find_files.format(train_file, test_file))
+        raise
 
     network = build_network()
     n = len(train)
     epoch_size = int(n/10)
 
-    for i in range(5):
+    for i in range(num_epochs):
         shuffle(train)
         validation = train[:epoch_size]
         real_train = train[epoch_size: 2*epoch_size]
@@ -94,3 +96,10 @@ if __name__ == "__main__":
             network.error_on_dataset(validation)))
 
     print("Test error={:.3f}".format(network.error_on_dataset(test)))
+    show_random_examples(network, test)
+    return network
+
+
+if __name__ == "__main__":
+    data_dirname = os.path.join(os.path.dirname(__file__), 'mnist')
+    network = train_mnist(data_dirname)
