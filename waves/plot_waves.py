@@ -1,3 +1,7 @@
+import matplotlib as mpl
+mpl.use('TkAgg')
+
+import matplotlib.pyplot as plt
 import numpy
 
 from waves import *
@@ -18,7 +22,8 @@ def plot_eigenvectors(eigensystem, markersize=6):
     return fig
 
 
-def create_and_save_plots():
+def create_and_save_plots(five_filename="eigenvalues_5_beads.pdf",
+                          hundred_filename="eigenvalues_100_beads.pdf"):
     A = bead_matrix(5)
     eigensystem = sorted_eigensystem(A)
     eigenvalues, eigenvectors = eigensystem
@@ -29,13 +34,12 @@ def create_and_save_plots():
         print("%10.2f | %s" % (val, vec_str))
 
     fig1 = plot_eigenvectors(eigensystem)
-    fig1.savefig("eigenvalues_5_beads.pdf", bbox_inches="tight")
+    fig1.savefig(five_filename, bbox_inches="tight")
 
     fig2 = plot_eigenvectors(
         sorted_eigensystem(bead_matrix(100), top_k=5), markersize=4)
-    fig2.savefig("eigenvalues_100_beads.pdf", bbox_inches="tight")
+    fig2.savefig(hundred_filename, bbox_inches="tight")
 
 
 if __name__ == "__main__":
-    import matplotlib.pyplot as plt
     create_and_save_plots()
