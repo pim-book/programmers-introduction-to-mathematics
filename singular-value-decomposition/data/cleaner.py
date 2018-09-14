@@ -22,7 +22,8 @@ allWords = None
 
 def words():
     global allWords
-    with open('data/one-grams.txt', 'r') as infile:
+    dirname = os.path.dirname(__file__)
+    with open(os.path.join(dirname, 'one-grams.txt'), 'r') as infile:
         allWords = [line.strip() for line in infile]
 
     return set(allWords)
@@ -50,9 +51,10 @@ def wordnetPos(tag):
         return wordnet.NOUN
 
 
-def process():
+def process(output_filename="all_stories.json"):
     print("Loading...")
-    documentDict = loadRaw('data/cnn-stories')
+    dirname = os.path.dirname(__file__)
+    documentDict = loadRaw(os.path.join(dirname, 'cnn-stories'))
     documents = []
 
     print("Cleaning...")
@@ -74,7 +76,7 @@ def process():
         i += 1
 
     print("Writing to disk...")
-    with open('all_stories.json', 'w') as outfile:
+    with open(os.path.join(dirname, output_filename), 'w') as outfile:
         outfile.write(json.dumps(documents))
 
     print("Done!")
