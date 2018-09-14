@@ -3,7 +3,7 @@ function innerProduct(a, b) {
 }
 
 class Vector {
-  constructor(x, y, arrowheadSize=100) {
+  constructor(x, y, arrowheadSize = 100) {
     this.x = x;
     this.y = y;
     this.arrowheadSize = arrowheadSize;
@@ -29,10 +29,10 @@ class Vector {
 
   arrowheadOffset() {
     let angleFromHorizontal = Math.atan2(this.y, this.x);
-    let angleFromVertical = Math.PI/2 - angleFromHorizontal;
-    let angleDeg = parseInt(angleFromVertical * 180 / Math.PI);
+    let angleFromVertical = Math.PI / 2 - angleFromHorizontal;
+    let angleDeg = parseInt((angleFromVertical * 180) / Math.PI);
     let halfLength = Math.sqrt(this.arrowheadSize) / 2;
-    let arrowheadOffsetX = - halfLength * Math.cos(angleFromHorizontal);
+    let arrowheadOffsetX = -halfLength * Math.cos(angleFromHorizontal);
     let arrowheadOffsetY = halfLength * Math.sin(angleFromHorizontal);
     return [arrowheadOffsetX, arrowheadOffsetY, angleDeg];
   }
@@ -59,8 +59,7 @@ class Vector {
   }
 }
 
-
 module.exports = {
   Vector,
-  innerProduct,
+  innerProduct
 };

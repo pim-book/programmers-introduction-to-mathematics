@@ -1,9 +1,9 @@
-import { Vector } from './geometry';
+import { Vector } from "./geometry";
 
 let displayScaling = 1;
 
 class Bead {
-  constructor(x, y, id, mass=20) {
+  constructor(x, y, id, mass = 20) {
     this.id = id;
     this.mass = mass;
     this.position = new Vector(x, y);
@@ -16,7 +16,6 @@ class Bead {
     return this.position.add(this.force.scale(displayScaling));
   }
 
-
   simulateStep() {
     this.acceleration = this.force.scale(1.0 / this.mass);
     this.velocity = this.velocity.add(this.acceleration);
@@ -26,54 +25,62 @@ class Bead {
   }
 
   toString() {
-    return `${this.id}: (p: ${this.position}, v: ${this.velocity}, a: ${this.acceleration})`;
+    return `${this.id}: (p: ${this.position}, v: ${this.velocity}, a: ${
+      this.acceleration
+    })`;
   }
 }
 
 class SpringForce {
-  constructor(bead1, bead2, equilibriumLength, springConstant=1) {
+  constructor(bead1, bead2, equilibriumLength, springConstant = 1) {
     let displacementVector = bead2.position.subtract(bead1.position);
     this.distance = displacementVector.norm();
     this.forceMagnitude =
       springConstant * Math.max(0, this.distance - equilibriumLength);
-    this.forceOnBead1 =
-      displacementVector.normalized().scale(this.forceMagnitude);
-    this.forceOnBead2 =
-      displacementVector.normalized().scale(-this.forceMagnitude);
+    this.forceOnBead1 = displacementVector
+      .normalized()
+      .scale(this.forceMagnitude);
+    this.forceOnBead2 = displacementVector
+      .normalized()
+      .scale(-this.forceMagnitude);
   }
 }
 
 class System {
   // Coordinate system has (0,0) in the center.
-  constructor(width, numBeads=10, equilibriumLength=5) {
+  constructor(width, numBeads = 10, equilibriumLength = 5) {
     this.beads = [];
     this.distanceBetween = 150;
     this.equilibriumLength = equilibriumLength;
     let leftEndpoint = [-width / 2 + 25, 0];
     // add two extra "special" beads for the two ends of the string
     for (let i = 0; i < numBeads + 2; i++) {
-      this.beads.push(new Bead(
-        leftEndpoint[0] + i * this.distanceBetween,
-        leftEndpoint[1],
-        'bead' + i
-      ));
+      this.beads.push(
+        new Bead(
+          leftEndpoint[0] + i * this.distanceBetween,
+          leftEndpoint[1],
+          "bead" + i
+        )
+      );
     }
   }
 
   updateForces() {
-    this.forces = {};  // dictionary index -> [force]
+    this.forces = {}; // dictionary index -> [force]
     for (let i = 0; i < this.beads.length - 1; i++) {
       if (i == 0) {
         this.forces[i] = [];
       }
-      this.forces[i+1] = [];
+      this.forces[i + 1] = [];
 
       let jointForce = new SpringForce(
-        this.beads[i], this.beads[i+1], this.equilibriumLength
+        this.beads[i],
+        this.beads[i + 1],
+        this.equilibriumLength
       );
 
       this.forces[i].push(jointForce.forceOnBead1);
-      this.forces[i+1].push(jointForce.forceOnBead2);
+      this.forces[i + 1].push(jointForce.forceOnBead2);
     }
 
     for (let i = 1; i < this.beads.length - 1; i++) {
@@ -81,7 +88,7 @@ class System {
       for (let force of this.forces[i]) {
         finalForce = finalForce.add(force);
       }
-      this.beads[i].force = finalForce
+      this.beads[i].force = finalForce;
     }
   }
 
