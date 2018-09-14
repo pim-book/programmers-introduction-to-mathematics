@@ -80,4 +80,5 @@ def process():
     print("Done!")
 
 
-process()
+if __name__ == "__main__":
+    process()
