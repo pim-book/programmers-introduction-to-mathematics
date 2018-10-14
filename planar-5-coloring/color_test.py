@@ -1,8 +1,10 @@
 from assertpy import assert_that
 import igraph
+import pytest
 
-from color import planar_five_color
+from color import NotPlanarError
 from color import make_merge_map
+from color import planar_five_color
 
 
 def improperly_colored(G, e):
@@ -59,3 +61,16 @@ def test_color_five_regular_planar_graph():
     G.add_edges(flower)
     planar_five_color(G)
     assert_that(properly_colored(G)).is_true()
+
+
+def test_failure_of_deg_5_node():
+    G = igraph.Graph.Full(n=7)
+    with pytest.raises(ValueError):
+        planar_five_color(G)
+
+
+def test_failure_of_recursive_call():
+    G = igraph.Graph.Full(n=7)
+    G.delete_edges([(0, 1)])  # leaves node 0 with deg 5
+    with pytest.raises(NotPlanarError):
+        planar_five_color(G)
