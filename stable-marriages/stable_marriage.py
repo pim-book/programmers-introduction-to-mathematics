@@ -3,8 +3,18 @@ import itertools
 
 class Suitor:
     def __init__(self, id, preference_list):
+        """ A Suitor consists of an integer id (between 0 and the total number
+        of Suitors), and a preference list implicitly defining a ranking of the
+        set of Suiteds.
+
+        E.g., Suitor(2, [5, 0, 3, 4, 1, 2]) says the third Suitor prefers the
+        Suited with index 5 the most, then the Suited with index 0, etc.
+
+        The Suitor will propose in decreasing order of preference, and maintains
+        the internal state index_to_propose_to to keep track of the next proposal.
+        """
         self.preference_list = preference_list
-        self.index_to_propose_to = 0  # preference list is in order
+        self.index_to_propose_to = 0
         self.id = id
 
     def preference(self):
