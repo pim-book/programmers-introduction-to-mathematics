@@ -50,28 +50,27 @@ def planar_five_color(graph):
         g_prime.delete_vertices(v.index)
     else:
         v = deg5_nodes[0]
-        nbr_indices = [x['old_index'] for x in g_prime.vs[v.index].neighbors()]
+        neighbor_indices = [x['old_index'] for x in g_prime.vs[v.index].neighbors()]
 
         g_prime.delete_vertices(v.index)
-        neighbors_in_g_prime = g_prime.vs.select(old_index_in=nbr_indices)
+        neighbors_in_g_prime = g_prime.vs.select(old_index_in=neighbor_indices)
 
         result = find_two_nonadjacent(g_prime, neighbors_in_g_prime)
-
         if not result:
             raise NotPlanarError("Unable to find two nonadjacent vertices "
                 "for recursive call. Input graph is not planar.")
+
         w1, w2 = result
         merge_two(g_prime, w1, w2)
 
     colored_g_prime = planar_five_color(g_prime)
 
     for w in colored_g_prime.vs:
-        # subset selection handles the merged w1, w2
+        # subset selection handles the merged w1, w2 with one assignment
         graph.vs[w['old_index']]['color'] = w['color']
 
     neighbor_colors = set(w['color'] for w in v.neighbors())
     v['color'] = [j for j in colors if j not in neighbor_colors][0]
-
     return graph
 
 
