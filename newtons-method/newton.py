@@ -1,5 +1,7 @@
+THRESHOLD = 1e-16
 
-def newton_sequence(f, f_derivative,  starting_x):
+
+def newton_sequence(f, f_derivative,  starting_x, threshold=THRESHOLD):
     """Perform Newton's method to find the root of a differentiable funciton.
 
     Arguments:
@@ -16,9 +18,11 @@ def newton_sequence(f, f_derivative,  starting_x):
         steps of Newton's method.
     """
     x = starting_x
-    while True:
+    function_at_x = f(x)
+    while abs(function_at_x - x) > threshold:
         yield x
-        x -= f(x) / f_derivative(x)
+        x -= function_at_x / f_derivative(x)
+        function_at_x = f(x)
 
 
 if __name__ == "__main__":
