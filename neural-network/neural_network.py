@@ -273,7 +273,7 @@ class LinearNode(Node):
         than the number of arguments, and the first entry must correspond
         to the bias.
         '''
-        super().__init__(ConstantNode(), *arguments)
+        super().__init__(ConstantNode(), *arguments)  # first arg is the bias
         self.initialize_weights(initial_weights)
         self.has_parameters = True
         self.parameters = self.weights  # name alias
