@@ -39,7 +39,7 @@ def planar_five_color(graph):
 
     if not deg5_nodes:
         raise ValueError("Input graph (or recursive subgraph) does not "
-            "have a degree 5 node. Input graph is not planar.")
+                         "have a degree 5 node. Input graph is not planar.")
 
     g_prime = graph.copy()
     # preserved when deleting vertices
@@ -50,7 +50,9 @@ def planar_five_color(graph):
         g_prime.delete_vertices(v.index)
     else:
         v = deg5_nodes[0]
-        neighbor_indices = [x['old_index'] for x in g_prime.vs[v.index].neighbors()]
+        neighbor_indices = [
+            x['old_index'] for x in g_prime.vs[v.index].neighbors()
+        ]
 
         g_prime.delete_vertices(v.index)
         neighbors_in_g_prime = g_prime.vs.select(old_index_in=neighbor_indices)
@@ -58,7 +60,7 @@ def planar_five_color(graph):
         result = find_two_nonadjacent(g_prime, neighbors_in_g_prime)
         if not result:
             raise NotPlanarError("Unable to find two nonadjacent vertices "
-                "for recursive call. Input graph is not planar.")
+                                 "for recursive call. Input graph is not planar.")
 
         w1, w2 = result
         merge_two(g_prime, w1, w2)
