@@ -54,4 +54,4 @@ if __name__ == "__main__":
     ax.set_ylabel('y')
 
     # Save the figure to the output SVG file
-    plt.savefig("polynomials-perfect-secrecy.svg");
+    plt.savefig("polynomials-perfect-secrecy.svg")

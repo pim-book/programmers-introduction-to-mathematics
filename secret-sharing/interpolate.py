@@ -3,7 +3,7 @@ from polynomial import ZERO
 
 
 def single_term(points, i):
-    """ Return one term of an interpolated polynomial.
+    """Return one term of an interpolated polynomial.
 
     Arguments:
       - points: a list of (float, float)
@@ -23,8 +23,7 @@ def single_term(points, i):
 
 
 def interpolate(points):
-    """ Return the unique degree n polynomial passing through the given n+1 points.
-    """
+    """Return the unique degree n polynomial passing through the given n+1 points."""
     if len(points) == 0:
         raise ValueError('Must provide at least one point.')
 

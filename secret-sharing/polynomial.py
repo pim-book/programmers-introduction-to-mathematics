@@ -1,8 +1,16 @@
 from itertools import zip_longest
 
 
-# strip all copies of elt from the end of the list
 def strip(L, elt):
+    '''Strip all copies of elt from the end of the list.
+
+    Arguments:
+        L: a list (an indexable, sliceable object)
+        elt: the object to be removed
+
+    Returns:
+        a slice of L with all copies of elt removed from the end.
+    '''
     if len(L) == 0:
         return L
 
@@ -14,13 +22,29 @@ def strip(L, elt):
 
 
 class Polynomial(object):
+    '''A class representing a polynomial as a list of coefficients with no
+    trailing zeros.
+
+    A degree zero polynomial corresponds to the empty list of coefficients,
+    and is provided by this module as the variable ZERO.
+
+    Polynomials override the basic arithmetic operations.
+    '''
+
     def __init__(self, coefficients):
+        '''Create a new polynomial.
+
+        The caller must provide a list of all coefficients of the
+        polynomial, even those that are zero. E.g.,
+        Polynomial([0, 1, 0, 2]) corresponds to f(x) = x + 2x^3.
+        '''
         self.coefficients = strip(coefficients, 0)
         self.indeterminate = 'x'
 
     def add(self, other):
-        newCoefficients = [sum(x)
-                           for x in zip_longest(self, other, fillvalue=0.)]
+        newCoefficients = [
+            sum(x) for x in zip_longest(self, other, fillvalue=0.)
+        ]
         return Polynomial(newCoefficients)
 
     def __add__(self, other):
@@ -39,6 +63,7 @@ class Polynomial(object):
         return self.multiply(other)
 
     def __len__(self):
+        '''len satisfies len(p) == 1 + degree(p).'''
         return len(self.coefficients)
 
     def __repr__(self):
@@ -46,6 +71,12 @@ class Polynomial(object):
                            for i, a in enumerate(self.coefficients)])
 
     def evaluateAt(self, x):
+        '''Evaluate a polynomial at an input point.
+
+        Uses Horner's method, first discovered by Persian mathematician
+        Sharaf al-Dīn al-Ṭūsī, which evaluates a polynomial by minimizing
+        the number of multiplications.
+        '''
         theSum = 0
 
         for c in reversed(self.coefficients):
