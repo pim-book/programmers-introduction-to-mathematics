@@ -17,16 +17,10 @@ def loadRaw(directory):
     return documents
 
 
-allWords = None
-
-
 def words():
-    global allWords
     dirname = os.path.dirname(__file__)
     with open(os.path.join(dirname, 'one-grams.txt'), 'r') as infile:
-        allWords = [line.strip() for line in infile]
-
-    return set(allWords)
+        return set([line.strip() for line in infile])
 
 
 # Extract a list of tokens from a cleaned string.
