@@ -115,13 +115,14 @@ def cluster_stories(documents, k=10):
     word_centers, word_clustering = cluster(projected_words)
 
     word_clusters = tuple(
-        tuple(index_to_word[i] for (i, x) in enumerate(word_clustering) if x == j)
+        tuple(index_to_word[i]
+              for (i, x) in enumerate(word_clustering) if x == j)
         for j in range(len(set(word_clustering)))
     )
 
     document_clusters = tuple(
         tuple(index_to_document[i]['text']
-         for (i, x) in enumerate(document_clustering) if x == j)
+              for (i, x) in enumerate(document_clustering) if x == j)
         for j in range(len(set(document_clustering)))
     )
 

@@ -78,6 +78,7 @@ def test_make_document_term_matrix():
     for (a, b) in zip(flattened_actual, flattened_expected):
         assert_that(a).is_close_to(b, EPSILON)
 
+
 def test_cluster_stories():
     random.seed(1)
     numpy.random.seed(1)
