@@ -1,6 +1,6 @@
 # Springs demo
 
-To view the live demo visit pimbook.github.io
+To view the live demo visit [pimbook.org](https://pimbook.org)
 
 # Run locally
 
