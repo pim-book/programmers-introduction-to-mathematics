@@ -12,7 +12,7 @@ EPSILON = 1e-5
 def normalize(v):
     norm = numpy.linalg.norm(v)
     if norm == 0:
-       return v
+        return v
     return v / norm
 
 
@@ -83,4 +83,4 @@ def test_decompose():
 
     for key in decomposition.keys():
         assert_that(decomposition[key]).is_close_to(
-                expected_decomposition[key], EPSILON)
+            expected_decomposition[key], EPSILON)
