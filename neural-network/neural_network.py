@@ -73,14 +73,12 @@ class Node:
     compute_local_parameter_gradient: None -> [float]
     compute_global_parameter_gradient: None -> [float]
 
-    The output of compute_*_parameter_gradient should correspond to the values
-    of self.parameters index by index. The output of compute_local gradient should
-    correspond to the input vector, index by index.
+    The output of compute_*_parameter_gradient corresponds to the values of
+    self.parameters index by index. The output of compute_local gradient
+    corresponds to the input vector, index by index.
 
     If the Node is a terminal node (one that computes error for a training example)
-    it must also have the following method
-
-    compute_error: [float], int -> float
+    it must also have a method compute_error: [float], int -> float
     '''
 
     def __init__(self, *arguments):
@@ -177,6 +175,7 @@ class Node:
 
 
 class InputNode(Node):
+    '''A Node representing an input to the computation graph.'''
     def __init__(self, input_index):
         super().__init__()
         self.input_index = input_index
@@ -348,6 +347,9 @@ class L2ErrorNode(Node):
 
 
 class NeuralNetwork:
+    '''A wrapper class for a computation graph, which encapsulates the
+    backpropagation algorithm and training.
+    '''
     def __init__(self, terminal_node, input_nodes, error_node=None, step_size=None):
         self.terminal_node = terminal_node
         self.input_nodes = input_nodes
@@ -372,6 +374,7 @@ class NeuralNetwork:
         self.for_each(reset_one)
 
     def evaluate(self, inputs):
+        '''Evaluate the computation graph on a single set of inputs.'''
         self.reset()
         return self.terminal_node.evaluate(inputs)
 
@@ -385,8 +388,15 @@ class NeuralNetwork:
         self.for_each(lambda node: node.do_gradient_descent_step(step_size))
 
     def train(self, dataset, max_steps=10000):
-        '''dataset is a list of pairs ([float], int) where the first entry is
-        the data point and the second is the label.
+        '''Train the neural network on a dataset.
+
+        Args:
+            dataset: a list of pairs ([float], int) where the first entry is
+            the data point and the second is the label.
+            max_steps: the number of steps to train for.
+
+        Returns:
+            None (self is modified)
         '''
         for i in range(max_steps):
             inputs, label = random.choice(dataset)
