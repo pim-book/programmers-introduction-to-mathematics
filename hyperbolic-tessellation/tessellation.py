@@ -29,26 +29,25 @@ class PolygonSet(set):
     """A helper class wrapping a set of polygons, that implements special
     checks for membership and insertion.
 
-    We canonicalize a polygon by sorting its vertices, flattening the resulting list,
-    and reducing the precision to 5 decimal places. All insertion and containment checks
-    are done against the canonicalized input.
+    We canonicalize a polygon by rounding its vertex entries, and storing
+    them in a frozenset. All insertion and containment checks are done
+    against the canonicalized input.
     """
 
     PRECISION = 5
 
     def _canonicalize(self, points):
-        """Sort the points, then flatten to a 1-d list, rounding entries to
-        5 places of precision.
-        """
         return frozenset(
             Point(round(p.x, self.PRECISION), round(p.y, self.PRECISION))
             for p in points
         )
 
     def add_polygon(self, points):
+        """Add a polygon to the set."""
         self.add(self._canonicalize(points))
 
     def contains_polygon(self, points):
+        """Test if a polygon is in the set."""
         return self._canonicalize(points) in self
 
 
@@ -74,7 +73,8 @@ class HyperbolicTessellation(object):
     """A class representing a tessellation in the Poincare disk model.
 
     The model consists of the interior of a unit disk in the plane. Lines are
-    arcs of circles perpendicular to the boundary of the disk.
+    arcs of circles perpendicular to the boundary of the disk, or diameters
+    of the unit circle.
     """
 
     def __init__(self, configuration, max_polygon_count=500):

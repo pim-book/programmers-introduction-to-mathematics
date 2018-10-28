@@ -1,4 +1,3 @@
-from assertpy import assert_that
 from assertpy import fail
 from geometry import EPSILON
 

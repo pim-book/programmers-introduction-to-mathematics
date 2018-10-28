@@ -10,7 +10,8 @@ from testing import *
 
 def test_fundamental_triangle():
     config = TessellationConfiguration(6, 4)
-    center, pi_over_q_vertex, x_axis_vertex = compute_fundamental_triangle(config)
+    center, pi_over_q_vertex, x_axis_vertex = compute_fundamental_triangle(
+        config)
     assert_that(center).is_equal_to(Point(0, 0))
     assert_iterables_are_close(x_axis_vertex, Point(math.sqrt(2) - 1, 0))
 

@@ -74,7 +74,7 @@ def test_vertical_line_neq_line():
 def test_vertical_line_str():
     line = Line(Point(2, 5), slope=1)
     assert_that(str(line)).is_equal_to(
-            "Line(point={}, slope=1)".format(line.point))
+        "Line(point={}, slope=1)".format(line.point))
     assert_that(repr(line)).is_equal_to(str(line))
 
 
@@ -186,7 +186,8 @@ def test_circle_through_points_unit_circle():
     p2 = Point(1/2, -1/2)
 
     expected_circle = Circle(Point(3/2, 0), (5/4) ** 0.5)
-    actual_circle = circle_through_points_perpendicular_to_circle(p1, p2, reference_circle)
+    actual_circle = circle_through_points_perpendicular_to_circle(
+        p1, p2, reference_circle)
     assert_that(expected_circle).is_equal_to(actual_circle)
 
 
@@ -218,8 +219,10 @@ def test_circle_through_points_with_points_on_circle():
     p1 = Point(x, y1)
     p2 = Point(x, y2)
 
-    expected_circle = Circle(center=Point(x=1.3416407864998734, y=0), radius=0.8944271909999155)
-    actual_circle = circle_through_points_perpendicular_to_circle(p1, p2, reference_circle)
+    expected_circle = Circle(center=Point(
+        x=1.3416407864998734, y=0), radius=0.8944271909999155)
+    actual_circle = circle_through_points_perpendicular_to_circle(
+        p1, p2, reference_circle)
     assert_are_close(expected_circle.center, actual_circle.center)
     assert_are_close(expected_circle.radius, actual_circle.radius)
 
@@ -230,10 +233,12 @@ def test_circle_through_points_with_one_point_on_circle():
     p2 = Point(2/3, - math.sqrt(5) / 3)
 
     expected_circle = Circle(Point(3/2, 0), (5/4) ** 0.5)
-    actual_circle = circle_through_points_perpendicular_to_circle(p1, p2, reference_circle)
+    actual_circle = circle_through_points_perpendicular_to_circle(
+        p1, p2, reference_circle)
     assert_are_close(expected_circle.center, actual_circle.center)
     assert_are_close(expected_circle.radius, actual_circle.radius)
-    actual_circle = circle_through_points_perpendicular_to_circle(p2, p1, reference_circle)
+    actual_circle = circle_through_points_perpendicular_to_circle(
+        p2, p1, reference_circle)
     assert_are_close(expected_circle.center, actual_circle.center)
     assert_are_close(expected_circle.radius, actual_circle.radius)
 

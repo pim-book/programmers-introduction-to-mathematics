@@ -230,14 +230,14 @@ class Circle(namedtuple('Circle', ['center', 'radius'])):
             return set([
                 Point(x, c_y + sqrt_disc),
                 Point(x, c_y - sqrt_disc),
-                ])
+            ])
         else:
             A = m ** 2 + 1
             B = 2 * (m * y - m * c_y - c_x - m ** 2 * x)
             C = (
-                    c_x ** 2 + (m * x) ** 2 + (y - c_y) ** 2
-                    - 2 * m * x * y + 2 * m * x * c_y - r ** 2
-                    )
+                c_x ** 2 + (m * x) ** 2 + (y - c_y) ** 2
+                - 2 * m * x * y + 2 * m * x * c_y - r ** 2
+            )
             discriminant = B * B - 4 * A * C
             if abs(discriminant) < EPSILON:
                 discriminant = 0
@@ -249,10 +249,10 @@ class Circle(namedtuple('Circle', ['center', 'radius'])):
             x_values = set([
                 (-B + sqrt_disc) / (2 * A),
                 (-B - sqrt_disc) / (2 * A),
-                ])
+            ])
             return set(
-                    Point(x, line.y_value(x)) for x in x_values
-                    )
+                Point(x, line.y_value(x)) for x in x_values
+            )
 
 
 def distance(p1, p2):
@@ -317,7 +317,8 @@ def circle_through_points_perpendicular_to_circle(point1, point2, circle):
     """
     if circle.contains(point1):
         if circle.contains(point2):
-            circle_center = intersection_of_common_tangents(circle, point1, point2)
+            circle_center = intersection_of_common_tangents(
+                circle, point1, point2)
             radius = distance(circle_center, point1)
             return Circle(circle_center, radius)
 
