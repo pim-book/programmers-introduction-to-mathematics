@@ -5,7 +5,7 @@ import tempfile
 from plot_waves import create_and_save_plots
 
 
-def test_generate_many_tessellations():
+def test_generate_plots():
     tmpdir = tempfile.mkdtemp()
     five_filename = os.path.join(tmpdir, "five.pdf")
     hundred_filename = os.path.join(tmpdir, "hundred.pdf")
