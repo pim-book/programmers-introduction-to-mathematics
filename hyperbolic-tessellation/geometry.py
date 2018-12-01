@@ -53,6 +53,9 @@ class Point(namedtuple('Point', ['x', 'y'])):
     def __str__(self):
         return 'Point(x={:.2f}, y={:.2f})'.format(self.x, self.y)
 
+    def __repr__(self):
+        return str(self)
+
 
 def inner_product(v, w):
     return v.x * w.x + v.y * w.y
@@ -129,6 +132,9 @@ class Line:
     def __str__(self):
         return "Line(point={}, slope={})".format(
             self.point, self.slope)
+
+    def __repr__(self):
+        return str(self)
 
 
 class VerticalLine(Line):
