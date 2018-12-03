@@ -37,29 +37,16 @@ def test_cache_repr():
     cache.global_gradient = 3
     cache.local_parameter_gradient = 4
     cache.global_parameter_gradient = 5
-
-    #assert_that(repr(cache)).is_equal_to(
-        #"{'output': 1, "
-        #"'local_gradient': 2, "
-        #"'global_gradient': 3, "
-        #"'local_parameter_gradient': 4, "
-        #"'global_parameter_gradient': 5}")
-
-    assert_that(repr(cache)).is_equal_to(
+    expect = (
         "CachedNodeData(output=1, "
         "local_gradient=2, "
         "global_gradient=3, "
         "local_parameter_gradient=4, "
-        "global_parameter_gradient=5)")
-
+        "global_parameter_gradient=5)"
+    )
+    assert_that(repr(cache)).is_equal_to(expect)
     cache = eval(repr(cache))
-
-    assert_that(repr(cache)).is_equal_to(
-        "CachedNodeData(output=1, "
-        "local_gradient=2, "
-        "global_gradient=3, "
-        "local_parameter_gradient=4, "
-        "global_parameter_gradient=5)")
+    assert_that(repr(cache)).is_equal_to(expect)
 
 def test_linear_node_bad_initialization():
     input_nodes = InputNode.make_input_nodes(3)

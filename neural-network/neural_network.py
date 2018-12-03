@@ -44,7 +44,6 @@ class CachedNodeData:
         self.global_parameter_gradient = global_parameter_gradient
 
     def __repr__(self):
-        #return "{}".format(vars(self))
         return (
             "CachedNodeData(output=" + repr( self.output ) + ", " +
             "local_gradient=" + repr( self.local_gradient ) + ", " +
