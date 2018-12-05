@@ -35,15 +35,22 @@ class CachedNodeData:
     - global_parameter_gradient: [∂E/∂w_1, ∂E/∂w_2, ..., ∂E/∂w_k]
     '''
 
-    def __init__(self):
-        self.output = None
-        self.local_gradient = None
-        self.global_gradient = None
-        self.local_parameter_gradient = None
-        self.global_parameter_gradient = None
+    def __init__(self, output=None, local_gradient=None, global_gradient=None,
+                local_parameter_gradient=None, global_parameter_gradient=None):
+        self.output = output
+        self.local_gradient = local_gradient
+        self.global_gradient = global_gradient
+        self.local_parameter_gradient = local_parameter_gradient
+        self.global_parameter_gradient = global_parameter_gradient
 
     def __repr__(self):
-        return "{}".format(vars(self))
+        return (
+            "CachedNodeData(output=" + repr( self.output ) + ", " +
+            "local_gradient=" + repr( self.local_gradient ) + ", " +
+            "global_gradient=" + repr( self.global_gradient ) + ", " +
+            "local_parameter_gradient=" + repr( self.local_parameter_gradient ) + ", " +
+            "global_parameter_gradient=" + repr( self.global_parameter_gradient ) + ")"
+        )
 
 
 class Node:
