@@ -1,6 +1,7 @@
 import itertools
 
 
+# This is a test
 class Suitor:
     def __init__(self, id, preference_list):
         """ A Suitor consists of an integer id (between 0 and the total number
@@ -30,7 +31,7 @@ class Suitor:
         return hash(self.id)
 
     def __repr__(self):
-        return "Suitor({})".format(self.id)
+        return "Suitor(id={}, preference_list={})".format(self.id, self.preference_list)
 
 
 class Suited:
@@ -64,7 +65,7 @@ class Suited:
         return hash(self.id)
 
     def __repr__(self):
-        return "Suited({})".format(self.id)
+        return "Suited(id={}, preference_list={})".format(self.id, self.preference_list)
 
 
 def stable_marriage(suitors, suiteds):
