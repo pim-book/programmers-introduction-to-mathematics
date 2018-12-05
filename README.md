@@ -1,6 +1,6 @@
 # A Programmer's Introduction to Mathematics
 
-[![travis-badge](https://travis-ci.org/pim-book/programmers-introduction-to-mathematics.svg?branch=master)](https://travis-ci.org/pim-book/programmers-introduction-to-mathematics) [![Coverage Status](https://coveralls.io/repos/github/j2kun/programmers-introduction-to-mathematics/badge.svg)](https://coveralls.io/github/j2kun/programmers-introduction-to-mathematics)
+[![travis-badge](https://travis-ci.org/pim-book/programmers-introduction-to-mathematics.svg?branch=master)](https://travis-ci.org/pim-book/programmers-introduction-to-mathematics) [![Coverage Status](https://coveralls.io/repos/github/pim-book/programmers-introduction-to-mathematics/badge.svg?branch=master)](https://coveralls.io/github/pim-book/programmers-introduction-to-mathematics?branch=master)
 
 This repository contains the code implementing the applications from each
 chapter of [A Programmer's Introduction to Mathematics](https://pimbook.org).
