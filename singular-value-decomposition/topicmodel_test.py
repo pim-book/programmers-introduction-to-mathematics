@@ -5,7 +5,6 @@ import random
 from topicmodel import all_words
 from topicmodel import cluster_stories
 from topicmodel import make_document_term_matrix
-from topicmodel import normalize
 
 EPSILON = 1e-9
 

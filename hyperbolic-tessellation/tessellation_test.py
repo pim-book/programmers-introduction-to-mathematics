@@ -1,7 +1,5 @@
-from assertpy import assert_that
 from geometry import Point
 from geometry import rotate_around_origin
-import itertools
 import math
 import pytest
 

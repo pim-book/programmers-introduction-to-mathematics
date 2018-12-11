@@ -6,7 +6,6 @@ from neural_network import ReluNode
 from neural_network import SigmoidNode
 from random import shuffle
 import os
-import sys
 
 
 def load_1s_and_7s(filename):

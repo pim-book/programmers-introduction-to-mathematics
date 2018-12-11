@@ -5,7 +5,6 @@ Poincare disk by uniform, regular polygons.
 from collections import deque
 from collections import namedtuple
 from geometry import Point
-from geometry import bounding_box_area
 from geometry import orientation
 from hyperbolic import PoincareDiskLine
 from hyperbolic import PoincareDiskModel
