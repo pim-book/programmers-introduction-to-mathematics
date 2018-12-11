@@ -21,13 +21,6 @@ def test_all_words_single_doc():
     assert_that(all_words([document])).is_equal_to(['a', 'b', 'c'])
 
 
-def test_all_words_single_doc():
-    document = {
-        'words': ['b', 'c', 'a']
-    }
-    assert_that(all_words([document])).is_equal_to(['a', 'b', 'c'])
-
-
 def test_all_words_many_docs():
     doc1 = {
         'words': ['b', 'c', 'a']
