@@ -168,7 +168,7 @@ class Node:
             self.cache.global_parameter_gradient = self.compute_global_parameter_gradient()
         return self.cache.global_parameter_gradient
 
-    def compute_output(self):
+    def compute_output(self, inputs):
         raise NotImplementedError()
 
     def compute_local_parameter_gradient(self):
