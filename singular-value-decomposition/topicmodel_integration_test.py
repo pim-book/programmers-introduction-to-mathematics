@@ -1,4 +1,3 @@
-from assertpy import assert_that
 import os
 
 from topicmodel import cluster_stories

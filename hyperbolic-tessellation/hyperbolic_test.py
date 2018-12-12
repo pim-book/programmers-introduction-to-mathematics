@@ -1,7 +1,6 @@
 from assertpy import assert_that
 from geometry import Point
 from tessellation import TessellationConfiguration
-import itertools
 import math
 
 from hyperbolic import *

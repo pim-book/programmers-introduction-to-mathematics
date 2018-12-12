@@ -5,20 +5,12 @@ import random
 from topicmodel import all_words
 from topicmodel import cluster_stories
 from topicmodel import make_document_term_matrix
-from topicmodel import normalize
 
 EPSILON = 1e-9
 
 
 def test_all_words_empty():
     assert_that(all_words([])).is_equal_to([])
-
-
-def test_all_words_single_doc():
-    document = {
-        'words': ['b', 'c', 'a']
-    }
-    assert_that(all_words([document])).is_equal_to(['a', 'b', 'c'])
 
 
 def test_all_words_single_doc():

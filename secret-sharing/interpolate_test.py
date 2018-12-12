@@ -1,6 +1,5 @@
 from assertpy import assert_that
 
-from polynomial import Polynomial
 from interpolate import interpolate
 import pytest
 

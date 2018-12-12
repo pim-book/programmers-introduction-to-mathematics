@@ -1,13 +1,10 @@
 from assertpy import assert_that
-import pytest
 import random
 
-from neural_network import ConstantNode
 from neural_network import InputNode
 from neural_network import L2ErrorNode
 from neural_network import LinearNode
 from neural_network import NeuralNetwork
-from neural_network import Node
 from neural_network import ReluNode
 from neural_network import SigmoidNode
 
