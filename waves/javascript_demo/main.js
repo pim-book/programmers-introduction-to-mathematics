@@ -1,5 +1,4 @@
 import * as d3 from "d3";
-import { Vector } from "./geometry";
 import { System } from "./springs";
 
 let width = 1000;
@@ -30,12 +29,6 @@ function fromCartesianX(x) {
 }
 function fromCartesianY(y) {
   return originY - y;
-}
-function toCartesianX(x) {
-  return x - originX;
-}
-function toCartesianY(y) {
-  return -y + originY;
 }
 
 function createVectorsSVG(beads) {
