@@ -48,7 +48,6 @@ class Vector {
 
   project(w) {
     // project this onto the input vector w
-    let normW = Math.sqrt(innerProduct(w, w));
     let normalizedW = w.normalized();
     let signedLength = innerProduct(this, normalizedW);
 
