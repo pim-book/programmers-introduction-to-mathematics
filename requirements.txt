@@ -30,7 +30,7 @@ pycodestyle==2.4.0
 Pygments==2.2.0
 pyparsing==2.2.0
 pytest==3.8.0
-pytest-cov==2.6.0
+pytest-cov==2.5.0
 python-coveralls==2.9.1
 python-dateutil==2.7.3
 python-igraph==0.7.1.post6
@@ -42,5 +42,5 @@ simplegeneric==0.8.1
 six==1.11.0
 svgwrite==1.1.12
 traitlets==4.3.2
-urllib3==1.24
+urllib3==1.24.2
 wcwidth==0.1.7
