@@ -1,7 +1,14 @@
-THRESHOLD = 1e-16
+'''
+Note, the ability for Newton's method to converge depends heavily on
+the size of this threshold compared to the size of the derivatives
+in the function being computed. For example, the tests for this file
+will not converge if the threshold is decreased to 1e-16, even though
+they are finding the correct root.
+'''
+THRESHOLD = 1e-12
 
 
-def newton_sequence(f, f_derivative,  starting_x, threshold=THRESHOLD):
+def newton_sequence(f, f_derivative, starting_x, threshold=THRESHOLD):
     """Perform Newton's method to find the root of a differentiable funciton.
 
     Arguments:
@@ -19,7 +26,7 @@ def newton_sequence(f, f_derivative,  starting_x, threshold=THRESHOLD):
     """
     x = starting_x
     function_at_x = f(x)
-    while abs(function_at_x - x) > threshold:
+    while abs(function_at_x) > threshold:
         yield x
         x -= function_at_x / f_derivative(x)
         function_at_x = f(x)
