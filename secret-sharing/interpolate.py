@@ -48,7 +48,7 @@ def single_term(points, i):
 
 
 def interpolate(points):
-    """Return the unique degree n polynomial passing through the given n+1 points."""
+    """Return the unique polynomial of degree at most n passing through the given n+1 points."""
     if len(points) == 0:
         raise ValueError('Must provide at least one point.')
 
