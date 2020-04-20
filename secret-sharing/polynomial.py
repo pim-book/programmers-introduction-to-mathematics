@@ -42,22 +42,22 @@ class Polynomial(object):
         self.indeterminate = 'x'
 
     def add(self, other):
-        newCoefficients = [
+        new_coefficients = [
             sum(x) for x in zip_longest(self, other, fillvalue=0.)
         ]
-        return Polynomial(newCoefficients)
+        return Polynomial(new_coefficients)
 
     def __add__(self, other):
         return self.add(other)
 
     def multiply(self, other):
-        newCoeffs = [0] * (len(self) + len(other) - 1)
+        new_coefficients = [0] * (len(self) + len(other) - 1)
 
         for i, a in enumerate(self):
             for j, b in enumerate(other):
-                newCoeffs[i+j] += a*b
+                new_coefficients[i+j] += a*b
 
-        return Polynomial(strip(newCoeffs, 0))
+        return Polynomial(strip(new_coefficients, 0))
 
     def __mul__(self, other):
         return self.multiply(other)
@@ -70,7 +70,7 @@ class Polynomial(object):
         return ' + '.join(['%s %s^%d' % (a, self.indeterminate, i) if i > 0 else '%s' % a
                            for i, a in enumerate(self.coefficients)])
 
-    def evaluateAt(self, x):
+    def evaluate_at(self, x):
         '''Evaluate a polynomial at an input point.
 
         Uses Horner's method, first discovered by Persian mathematician
@@ -94,7 +94,7 @@ class Polynomial(object):
         return self + (-other)
 
     def __call__(self, *args):
-        return self.evaluateAt(args[0])
+        return self.evaluate_at(args[0])
 
 
 ZERO = Polynomial([])
