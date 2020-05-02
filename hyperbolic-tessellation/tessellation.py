@@ -14,14 +14,14 @@ import svgwrite
 
 class TessellationConfiguration(
         namedtuple('TessellationConfiguration',
-                   ['numPolygonSides', 'numPolygonsPerVertex'])):
-    def __init__(self, numPolygonSides, numPolygonsPerVertex):
+                   ['num_polygon_sides', 'num_polygons_per_vertex'])):
+    def __init__(self, num_polygon_sides, num_polygons_per_vertex):
         if not self.is_hyperbolic():
             raise ValueError("Configuration {%s, %s} is not hyperbolic." %
-                             (self.numPolygonSides, self.numPolygonsPerVertex))
+                             (self.num_polygon_sides, self.num_polygons_per_vertex))
 
     def is_hyperbolic(self):
-        return (self.numPolygonSides - 2) * (self.numPolygonsPerVertex - 2) > 4
+        return (self.num_polygon_sides - 2) * (self.num_polygons_per_vertex - 2) > 4
 
 
 class PolygonSet(set):
@@ -88,7 +88,7 @@ class HyperbolicTessellation(object):
     def compute_center_polygon(self):
         center, top_vertex, x_axis_vertex = compute_fundamental_triangle(
             self.configuration)
-        p = self.configuration.numPolygonSides
+        p = self.configuration.num_polygon_sides
 
         """The center polygon's first vertex is the top vertex (the one that
         makes an angle of pi / q), because the x_axis_vertex is the center of

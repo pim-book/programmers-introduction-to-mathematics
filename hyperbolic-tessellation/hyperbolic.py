@@ -54,8 +54,8 @@ def compute_fundamental_triangle(tessellation_configuration):
 
     We can then solve for b_y, g, and d_x trivially.
     """
-    p = tessellation_configuration.numPolygonSides
-    q = tessellation_configuration.numPolygonsPerVertex
+    p = tessellation_configuration.num_polygon_sides
+    q = tessellation_configuration.num_polygons_per_vertex
 
     tan_p = math.tan(math.pi / p)
     Z = math.tan(math.pi / p + math.pi / q) * tan_p
