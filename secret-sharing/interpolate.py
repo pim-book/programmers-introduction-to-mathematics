@@ -32,12 +32,12 @@ def single_term(points, i):
         """
         The inlined Polynomial instance below is how we represent
 
-          (x - x_i) / (x_i - x_j)
+          (x - x_j) / (x_i - x_j)
 
-        using our Polynomial data type (where t is the variable, and
+        using our Polynomial data type (where t replaces x as the variable, and
         x_i, x_j are two x-values of data points):
 
-          (x - x_i) / (x_i - x_j) = (-x_j / (x_i - x_j)) * t^0
+          (x - x_j) / (x_i - x_j) = (-x_j / (x_i - x_j)) * t^0
                                   +    (1 / (x_i - x_j)) * t^1
         """
         the_term = the_term * Polynomial([-xj / (xi - xj), 1.0 / (xi - xj)])
