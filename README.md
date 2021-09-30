@@ -23,3 +23,12 @@ pytest
 # with code coverage
 pytest --cov-report html:cov_html  --cov-report annotate:cov_annotate --cov
 ```
+
+## Docker
+
+To build and run the code in the repository with docker, run
+
+```
+docker build -t pimbook -f Dockerfile . 
+docker run -it --name pimbook pimbook:latest 
+```
