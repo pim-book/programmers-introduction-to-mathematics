@@ -33,7 +33,7 @@ pytest==3.8.0
 pytest-cov==2.5.0
 python-coveralls==2.9.1
 python-dateutil==2.7.3
-python-igraph==0.7.1.post6
+python-igraph==0.9.6
 pytz==2018.5
 PyYAML==5.4
 requests==2.20.0
@@ -42,5 +42,5 @@ simplegeneric==0.8.1
 six==1.11.0
 svgwrite==1.1.12
 traitlets==4.3.2
-urllib3==1.26.5
+urllib3==1.24.2
 wcwidth==0.1.7
