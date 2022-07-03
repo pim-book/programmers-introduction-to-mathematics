@@ -14,9 +14,9 @@ jobs:
       - python/install-packages:
           pkg-manager: pip
       - run:
-          name: Test
+          name: Test and Coverage
           command: |
-              python -m pytest --doctest-modules -v --cov-report term-missing --cov
+              python -m pytest --doctest-modules -v --cov-report term-missing --cov --junitxml=test-results/pytest/results.xml
               coveralls
       - store_test_results:
           path: test-results
