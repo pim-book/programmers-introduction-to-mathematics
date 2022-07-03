@@ -1,12 +1,12 @@
 version: 2.1
 
 orbs:
-  python: circleci/python@1.4.0
+  python: circleci/python@2.0.3
 
 jobs:
   build-and-test:
     docker:
-      - image: cimg/python:3.9
+      - image: cimg/python:3.6
     steps:
       - checkout
       - python/install-packages:
