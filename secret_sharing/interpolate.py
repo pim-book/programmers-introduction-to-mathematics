@@ -8,7 +8,7 @@ def single_term(points, i):
     This method computes one term of the sum from the proof of Theorem 2.2.
     In particular, it computes:
 
-      y_i \product_{j=0}^n (x - x_i) / (x_i - x_j)
+      y_i \\product_{j=0}^n (x - x_i) / (x_i - x_j)
 
     The encapsulating `interpolate` function sums these terms to construct
     the final interpolated polynomial.
