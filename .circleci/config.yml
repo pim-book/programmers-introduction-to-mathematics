@@ -9,6 +9,8 @@ jobs:
       - image: cimg/python:3.6
     steps:
       - checkout
+      - run: sudo apt-get update
+      - run: sudo apt-get install cmake
       - python/install-packages:
           pkg-manager: pip
       - run:
