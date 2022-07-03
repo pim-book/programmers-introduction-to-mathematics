@@ -11,6 +11,7 @@ cycler==0.10.0
 decorator==4.3.0
 docopt==0.6.2
 idna==2.7
+igraph==0.9.11
 ipython==6.5.0
 ipython-genutils==0.2.0
 jedi==0.12.1
@@ -33,7 +34,6 @@ pytest==3.8.0
 pytest-cov==2.5.0
 python-coveralls==2.9.1
 python-dateutil==2.7.3
-python-igraph==0.9.6
 pytz==2018.5
 PyYAML==5.4
 requests==2.20.0
