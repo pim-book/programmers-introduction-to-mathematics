@@ -6,7 +6,6 @@ backcall==0.1.0
 certifi==2018.10.15
 chardet==3.0.4
 coverage==4.0.3
-coveralls==1.5.1
 cycler==0.10.0
 decorator==4.3.0
 docopt==0.6.2
@@ -32,7 +31,7 @@ Pygments==2.7.4
 pyparsing==2.2.0
 pytest==3.8.0
 pytest-cov==2.5.0
-python-coveralls==2.9.1
+python-coveralls==2.9.3
 python-dateutil==2.7.3
 pytz==2018.5
 PyYAML==5.4
