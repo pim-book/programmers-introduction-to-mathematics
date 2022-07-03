@@ -1,0 +1,25 @@
+version: 2.1
+
+orbs:
+  python: circleci/python@1.4.0
+
+jobs:
+  build-and-test:
+    docker:
+      - image: cimg/python:3.9
+    steps:
+      - checkout
+      - python/install-packages:
+          pkg-manager: pip
+      - run:
+          name: Test
+          command: |
+              python -m pytest --mypy --cov-report html:cov_html --cov-report annotate:cov_annotate --cov --junitxml=test-results/pytest/results.xml
+              python -m coveralls
+      - store_test_results:
+          path: test-results
+
+workflows:
+  main:
+    jobs:
+      - build-and-test
