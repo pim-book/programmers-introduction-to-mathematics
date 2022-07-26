@@ -256,8 +256,12 @@ def test_neural_network_backpropagation_step():
 
 def test_neural_network_gradients2():
     input_nodes = InputNode.make_input_nodes(1)
+    # bias: 0
+    # weights: [2]
     initial_weights_f = [0, 2]
     linear_node_f = LinearNode(input_nodes, initial_weights=initial_weights_f)
+    # bias: 0
+    # weights: [3]
     initial_weights_h = [0, 3]
     linear_node_h = LinearNode([linear_node_f], initial_weights=initial_weights_h)
     error_node = L2ErrorNode(linear_node_h)
@@ -296,8 +300,9 @@ def test_neural_network_gradients2():
     # reality: ∂h/∂f = -41
     assert_that(linear_node_h.local_gradient[1]).is_equal_to(3)
 
-    # w_f = -64
-    assert_that(linear_node_h.parameters[1]).is_equal_to(-64)
+    # expected: w_f = -64
+    # reality: w_f = 904
+    assert_that(linear_node_f.parameters[1]).is_equal_to(-64)
     # expected: ∂E/∂f = 66
     # reality: ∂E/∂f = -902
     assert_that(linear_node_f.global_gradient).is_equal_to(66)
