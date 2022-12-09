@@ -3,7 +3,7 @@ assertpy==0.13
 atomicwrites==1.2.1
 attrs==18.2.0
 backcall==0.1.0
-certifi==2018.10.15
+certifi==2022.12.7
 chardet==3.0.4
 coverage==4.0.3
 cycler==0.10.0
