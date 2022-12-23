@@ -253,3 +253,64 @@ def test_neural_network_backpropagation_step():
 
     # ∂E/∂w_i = [8, 16, -16], delta is [-4, -8, 8]
     assert_that(linear_node.weights).is_equal_to(new_weights)
+
+def test_neural_network_gradients2():
+    input_nodes = InputNode.make_input_nodes(1)
+    # bias: 0
+    # weights: [2]
+    initial_weights_f = [0, 2]
+    linear_node_f = LinearNode(input_nodes, initial_weights=initial_weights_f)
+    # bias: 0
+    # weights: [3]
+    initial_weights_h = [0, 3]
+    linear_node_h = LinearNode([linear_node_f], initial_weights=initial_weights_h)
+    error_node = L2ErrorNode(linear_node_h)
+    network = NeuralNetwork(linear_node_h, input_nodes, error_node=error_node)
+
+    example = [2]
+    label = 1
+    step_size = 0.5
+
+    '''
+    h(w_h, x): linear node
+    f(w_f, x): linear node
+    E(w_h, w_f, x, y): (h(w_h, f(w_h, x)) - y) ^ 2
+    '''
+
+    network.backpropagation_step(example, label, step_size=step_size)
+
+    # h(w, x) = 12
+    # E(w_h, w_f, x, y) = 121
+    # assert_that(network.evaluate(example)).is_equal_to(12)
+    # assert_that(network.compute_error(example, label)).is_equal_to(121)
+
+    # ∂E/∂E = 1, ∂E/∂h = 22
+    assert_that(error_node.global_gradient).is_equal_to(1)
+    assert_that(error_node.local_gradient).is_equal_to([22])
+
+    # w_h = -41
+    assert_that(linear_node_h.parameters[1]).is_equal_to(-41)
+    # ∂E/∂h = 22
+    assert_that(linear_node_h.global_gradient).is_equal_to(22)
+    # ∂h/∂w_h = 4
+    assert_that(linear_node_h.local_parameter_gradient[1]).is_equal_to(4)
+    # ∂E/∂w_h = 88
+    assert_that(linear_node_h.global_parameter_gradient[1]).is_equal_to(88)
+    # expected: ∂h/∂f = 3
+    # reality: ∂h/∂f = -41
+    assert_that(linear_node_h.local_gradient[1]).is_equal_to(3)
+
+    # expected: w_f = -64
+    # reality: w_f = 904
+    assert_that(linear_node_f.parameters[1]).is_equal_to(-64)
+    # expected: ∂E/∂f = 66
+    # reality: ∂E/∂f = -902
+    assert_that(linear_node_f.global_gradient).is_equal_to(66)
+    # ∂f/∂w_f = 2
+    assert_that(linear_node_f.local_parameter_gradient[1]).is_equal_to(2)
+    # expected: ∂E/∂w_f = 132
+    # reality: ∂E/∂w_f = -1804
+    assert_that(linear_node_f.global_parameter_gradient[1]).is_equal_to(132)
+    # expected: ∂f/∂x = 2
+    # reality: ∂f/∂x = 904
+    assert_that(linear_node_f.local_gradient[1]).is_equal_to(2)
