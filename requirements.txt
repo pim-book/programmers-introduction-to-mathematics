@@ -11,7 +11,7 @@ decorator==4.3.0
 docopt==0.6.2
 idna==2.7
 igraph==0.9.11
-ipython==6.5.0
+ipython==8.10.0
 ipython-genutils==0.2.0
 jedi==0.12.1
 kiwisolver==1.0.1
